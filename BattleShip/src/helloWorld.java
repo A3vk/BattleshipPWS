@@ -1,12 +1,32 @@
+import java.util.Scanner;
 
 public class helloWorld {
 
 	public static void main(String[] args) {
-		int[] table = {25, 2, 89, 32, 962, 58, 42, 69, 3, 87 ,5, 96};
-		
-		for(int x: table)
-			System.out.println(x);
-
+		// Declare the object and initialize with
+        // predefined standard input object
+        @SuppressWarnings("resource")
+		Scanner sc = new Scanner(System.in);
+ 
+        // String input
+        String name = sc.nextLine();
+ 
+        // Character input
+        char gender = sc.next().charAt(0);
+ 
+        // Numerical data input
+        // byte, short and float can be read
+        // using similar-named functions.
+        int age = sc.nextInt();
+        long mobileNo = sc.nextLong();
+        double cgpa = sc.nextDouble();
+ 
+        // Print the values to check if input was correctly obtained.
+        System.out.println("Name: "+name);
+        System.out.println("Gender: "+gender);
+        System.out.println("Age: "+age);
+        System.out.println("Mobile Number: "+mobileNo);
+        System.out.println("CGPA: "+cgpa);
 	}
 
 }
