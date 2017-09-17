@@ -4,6 +4,9 @@ import java.awt.Graphics;
 import java.awt.image.BufferStrategy;
 
 import dev.adrivankempen.zeeslag.display.Display;
+import dev.adrivankempen.zeeslag.gfx.Assets;
+import dev.adrivankempen.zeeslag.states.GameState;
+import dev.adrivankempen.zeeslag.states.State;
 
 public class Game implements Runnable{
 	private Display display;
@@ -16,6 +19,8 @@ public class Game implements Runnable{
 	private BufferStrategy bs;
 	private Graphics g;
 	
+	private State gameState;
+	
 	public Game(String title, int width, int height) {
 		this.title = title;
 		this.width = width;
@@ -24,10 +29,16 @@ public class Game implements Runnable{
 	
 	private void init() {
 		display = new Display(title, width, height);
+		
+		Assets.init();
+		
+		gameState = new GameState();
+		State.setState(gameState);
 	}
 	
 	private void tick() {
-		
+		if(State.getState() != null)
+			State.getState().tick();
 	}
 	
 	private void render() {
@@ -44,7 +55,8 @@ public class Game implements Runnable{
 		g.clearRect(0, 0, width, height);
 		
 		//Draw here
-		
+		if(State.getState() != null)
+			State.getState().render(g);
 		//End draw
 		
 		bs.show();

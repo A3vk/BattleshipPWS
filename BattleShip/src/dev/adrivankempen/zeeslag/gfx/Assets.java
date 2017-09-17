@@ -8,7 +8,7 @@ public class Assets {
 	
 	public static BufferedImage shipBN, shipBO, shipBZ, shipBW, shipMH, shipMV, empty;
 	
-	public static void init(BufferedImage sheet) {
+	public static void init() {
 		
 	}
 }
