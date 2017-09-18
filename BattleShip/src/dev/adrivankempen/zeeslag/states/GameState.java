@@ -5,7 +5,7 @@ import java.awt.Graphics;
 import dev.adrivankempen.zeeslag.game.Bord;
 
 public class GameState extends State {
-	public Bord bord;
+	private Bord bord = new Bord(0, 0);
 
 	@Override
 	public void tick() {
@@ -14,7 +14,7 @@ public class GameState extends State {
 
 	@Override
 	public void render(Graphics g) {
-		
+		bord.render(g);
 	}
 	
 }
