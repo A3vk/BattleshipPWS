@@ -1,9 +1,9 @@
 package dev.adrivankempen.zeeslag.game.bord;
 
 import java.awt.Graphics;
+import java.awt.image.BufferedImage;
 
 import dev.adrivankempen.zeeslag.game.Tile;
-import dev.adrivankempen.zeeslag.gfx.Assets;
 import dev.adrivankempen.zeeslag.gfx.ImageLoader;
 
 public class Bord {
@@ -20,7 +20,7 @@ public class Bord {
 		
 		for(int i = 0; i < SIZE; i++) {
 			for(int j = 0; j < SIZE; j++) {
-				tiles[i][j] = new Tile(i, j, x, y, Assets.leeg);
+				tiles[i][j] = new Tile(i, j, x, y);
 			}
 		}
 	}
@@ -38,14 +38,18 @@ public class Bord {
 		}
 	}
 	
-	public Tile getTile(String Id) {
+	public Tile getTile(String Id) {		
 		for(int i = 0; i < SIZE; i++) {
 			for(int j = 0; j < SIZE; j++) {
-				if (tiles[i][j].getId() == Id) {
+				if (tiles[i][j].getId().equals(Id)) {
 					return tiles[i][j];
 				}
 			}
 		}
 		return null;
+	}
+	
+	public void changeImg(String Id, BufferedImage img) {
+		getTile(Id).setImg(img);
 	}
 }

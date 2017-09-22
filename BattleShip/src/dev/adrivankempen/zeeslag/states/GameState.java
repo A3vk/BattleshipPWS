@@ -12,7 +12,7 @@ public class GameState extends State {
 	@Override
 	public void tick() {
 		spelerBord.tick();
-		tegenstanderBord.tick();
+		tegenstanderBord.tick();		
 	}
 
 	@Override
