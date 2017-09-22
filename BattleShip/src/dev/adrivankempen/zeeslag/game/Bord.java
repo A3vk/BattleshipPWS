@@ -2,25 +2,41 @@ package dev.adrivankempen.zeeslag.game;
 
 import java.awt.Graphics;
 
-import dev.adrivankempen.zeeslag.gfx.Assets;
 import dev.adrivankempen.zeeslag.gfx.ImageLoader;
 
 public class Bord {
-	private Object[][] tiles = new Object[10][10];
+	private final int SIZE = 10;
+	private final int RAND = 20;
+	
 	private int x, y;
-	private int rand = 20;
-	private int size = 40;
+	private Tile[][] tiles;
+	private int startX, startY;
 	
 	public Bord(int x, int y) {
 		this.x = x;
 		this.y = y;
+		
+		startX = x + RAND;
+		startY = y + RAND;
+		
+		tiles = new Tile[SIZE][SIZE];
+		
+		for(int i = 0; i < SIZE; i++) {
+			for(int j = 0; j < SIZE; j++) {
+				tiles[i][j] = new Tile(startX + 40 * i, startY + 40 * j);
+			}
+		}
+	}
+	
+	public void tick() {
+		
 	}
 	
 	public void render(Graphics g) {
 		g.drawImage(ImageLoader.loadImage("/textures/Bord.png"), x, y, null);
-		for(int i = 0; i < tiles.length; i++) {
-			for(int j = 0; j < tiles.length; j++) {
-				tiles[i][j] = g.drawImage(Assets.leeg, (x + rand + i * size), (y + rand + j * size), null);
+		for(int i = 0; i < SIZE; i++) {
+			for(int j = 0; j < SIZE; j++) {
+				tiles[i][j].render(g);
 			}
 		}
 	}
