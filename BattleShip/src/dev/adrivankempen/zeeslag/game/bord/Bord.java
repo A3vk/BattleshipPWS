@@ -16,11 +16,11 @@ public class Bord {
 		this.x = x;
 		this.y = y;
 		
-		tiles = new Tile[SIZE][SIZE];
+		setTiles(new Tile[SIZE][SIZE]);
 		
 		for(int i = 0; i < SIZE; i++) {
 			for(int j = 0; j < SIZE; j++) {
-				tiles[i][j] = new Tile(i, j, x, y);
+				getTiles()[i][j] = new Tile(i, j, x, y);
 			}
 		}
 	}
@@ -33,7 +33,7 @@ public class Bord {
 		g.drawImage(ImageLoader.loadImage("/textures/Bord.png"), x, y, null);
 		for(int i = 0; i < SIZE; i++) {
 			for(int j = 0; j < SIZE; j++) {
-				tiles[i][j].render(g);
+				getTiles()[i][j].render(g);
 			}
 		}
 	}
@@ -41,8 +41,8 @@ public class Bord {
 	public Tile getTile(String Id) {		
 		for(int i = 0; i < SIZE; i++) {
 			for(int j = 0; j < SIZE; j++) {
-				if (tiles[i][j].getId().equals(Id)) {
-					return tiles[i][j];
+				if (getTiles()[i][j].getId().equals(Id)) {
+					return getTiles()[i][j];
 				}
 			}
 		}
@@ -51,5 +51,13 @@ public class Bord {
 	
 	public void changeImg(String Id, BufferedImage img) {
 		getTile(Id).setImg(img);
+	}
+
+	public Tile[][] getTiles() {
+		return tiles;
+	}
+
+	public void setTiles(Tile[][] tiles) {
+		this.tiles = tiles;
 	}
 }

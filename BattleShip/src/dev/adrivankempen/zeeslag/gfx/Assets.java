@@ -5,7 +5,7 @@ import java.awt.image.BufferedImage;
 public class Assets {
 	private static final int width = 40, height = 40;
 	
-	public static BufferedImage shipBN, shipBO, shipBZ, shipBW, shipMH, shipMV, leeg, mis1;
+	public static BufferedImage shipBN, shipBO, shipBZ, shipBW, shipMH, shipMV, leeg, mis1, full;
 	
 	public static void init() {
 		SpriteSheet sheet = new SpriteSheet(ImageLoader.loadImage("/textures/SpriteSheet.png"));
@@ -18,5 +18,6 @@ public class Assets {
 		shipMH = sheet.crop(200, 0, width, height);
 		shipMV = sheet.crop(240, 0, width, height);
 		mis1 = sheet.crop(280, 0, width, height);
+		full = sheet.crop(0, 40, width, height);
 	}
 }

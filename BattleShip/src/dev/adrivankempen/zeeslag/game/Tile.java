@@ -13,6 +13,7 @@ public class Tile {
 	private int coorX, coorY;
 	private int x, y;
 	private String Id;
+	private boolean canPlace = true;
 	
 	private BufferedImage img = Assets.leeg;
 	
@@ -34,7 +35,7 @@ public class Tile {
 		g.drawImage(img, x, y, null);
 	}
 	
-	public String createId() {
+	private String createId() {
 		String Id1;
 		String Id2;
 		
@@ -54,5 +55,14 @@ public class Tile {
 	
 	public void setImg(BufferedImage img) {
 		this.img = img;
+	}
+
+	public boolean getCanPlace() {
+		return canPlace;
+	}
+
+	public void switchCanPlace(boolean bool) {
+		img = Assets.full;
+		canPlace = bool;
 	}
 }
