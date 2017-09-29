@@ -5,6 +5,7 @@ import java.awt.image.BufferStrategy;
 
 import dev.adrivankempen.zeeslag.display.Display;
 import dev.adrivankempen.zeeslag.gfx.Assets;
+import dev.adrivankempen.zeeslag.input.MouseManager;
 import dev.adrivankempen.zeeslag.states.GameState;
 import dev.adrivankempen.zeeslag.states.State;
 
@@ -19,20 +20,31 @@ public class Game implements Runnable{
 	private BufferStrategy bs;
 	private Graphics g;
 	
+	private Handler handler;
+	
 	private State gameState;
+	
+	private MouseManager mouseManager;
 	
 	public Game(String title, int width, int height) {
 		this.title = title;
 		this.width = width;
 		this.height = height;
+		
+		handler = new Handler(this);
+		mouseManager = new MouseManager();
 	}
 	
 	private void init() {
 		display = new Display(title, width, height);
+		display.getJFrame().addMouseListener(handler.getMouseManager());
+		display.getJFrame().addMouseMotionListener(handler.getMouseManager());
+		display.getCanvas().addMouseListener(handler.getMouseManager());
+		display.getCanvas().addMouseMotionListener(handler.getMouseManager());
 		
 		Assets.init();
 		
-		gameState = new GameState();
+		gameState = new GameState(handler);
 		State.setState(gameState);
 	}
 	
@@ -96,6 +108,10 @@ public class Game implements Runnable{
 		}
 		
 		stop();
+	}
+	
+	public MouseManager getMouseManager() {
+		return mouseManager;
 	}
 	
 	public synchronized void start() {

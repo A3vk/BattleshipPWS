@@ -7,8 +7,6 @@ public class Ship {
 	private int length, direction, startX, startY;
 	private Bord bord;
 	
-	private boolean CONTROL = true;
-	
 	public Ship(int l, int d, int startX, int startY, Bord bord) {
 		length = l;
 		direction = d; //d = 0 horizontaal & d = 1 verticaal
@@ -19,63 +17,66 @@ public class Ship {
 		placeShip();
 	}
 	
-	private void placeShip() {
-		if(direction == 0) {
-			for(int i = -1; i < length + 1; i++) {
+	public boolean checkPosition(int d, int l, int x, int y, Bord b) {
+		if(d == 0) {
+			for(int i = -1; i < l + 1; i++) {
 				for(int j = -1; j <= 1; j++) {
 					try {
-						if(bord.getTiles()[startX + i][startY + j].getCanPlace() == false) {
-							CONTROL = false;
+						if(b.getTiles()[x + i][y + j].getCanPlace() == false) {
+							return false;
 						}
 					} catch(ArrayIndexOutOfBoundsException e) {
-						if(startX <= 0 && startY <= 0 && startX >= 9 - length && startY >= 9 - length) {
-							CONTROL = false;
+						if((startX < 0 && startY < 0) || (startX + l - 1 > 9 || startY > 9)) {
+							return false;
 						}
 					}
 				}
 			}
-			if(CONTROL) {
-				for(int i = -1; i < length + 1; i++) {
-					for(int j = -1; j <= 1; j++) {
-						try {
-							bord.getTiles()[startX + i][startY + j].switchCanPlace(false);
-							if(i == 0) 
-								bord.getTiles()[startX + i][startY].setImg(Assets.shipBW);
-							else if(i > 0 && i < length - 1)
-								bord.getTiles()[startX + i][startY].setImg(Assets.shipMH);
-							else if(i == length - 1)
-								bord.getTiles()[startX + i][startY].setImg(Assets.shipBO);
-						} catch(ArrayIndexOutOfBoundsException e) {}
+		} else if(d == 1) {
+			for(int i = -1; i < l + 1; i++) {
+				for(int j = -1; j <= 1; j++) {
+					try {
+						if(b.getTiles()[x + j][y + i].getCanPlace() == false) {
+							return false;
+						}
+					} catch(ArrayIndexOutOfBoundsException e) {
+						if((startX < 0 && startY < 0) || (startX > 9 || startY + l - 1 > 9)) {
+							return false;
+						}
 					}
+				}
+			}
+		}
+		return true;
+	}
+	
+	private void placeShip() {
+		if(direction == 0) {
+			if(checkPosition(direction, length, startX, startY, bord)) {
+				for(int i = 0; i < length; i++) {
+					try {
+						bord.getTiles()[startX + i][startY].setCanPlace(false);
+						if(i == 0) 
+							bord.getTiles()[startX + i][startY].setImg(Assets.shipBW);
+						else if(i > 0 && i < length - 1)
+							bord.getTiles()[startX + i][startY].setImg(Assets.shipMH);
+						else if(i == length - 1)
+							bord.getTiles()[startX + i][startY].setImg(Assets.shipBO);
+					} catch(ArrayIndexOutOfBoundsException e) {}
 				}
 			}
 		} else if(direction == 1) {
-			for(int i = -1; i < length + 1; i++) {
-				for(int j = -1; j <= 1; j++) {
+			if(checkPosition(direction, length, startX, startY, bord)) {
+				for(int i = 0; i < length; i++) {
 					try {
-						if(bord.getTiles()[startX + j][startY + i].getCanPlace() == false) {
-							CONTROL = false;
-						}
-					} catch(ArrayIndexOutOfBoundsException e) {
-						if(startX <= 0 && startY <= 0 && startX >= 9 - length && startY >= 9 - length) {
-							CONTROL = false;
-						}
-					}
-				}
-			}
-			if(CONTROL) {
-				for(int i = -1; i < length + 1; i++) {
-					for(int j = -1; j <= 1; j++) {
-						try {
-							bord.getTiles()[startX + j][startY + i].switchCanPlace(false);
-							if(i == 0)
-								bord.getTiles()[startX][startY + i].setImg(Assets.shipBN);
-							else if(i > 0 && i < length - 1)
-								bord.getTiles()[startX][startY + i].setImg(Assets.shipMV);
-							else if(i == length - 1)
-								bord.getTiles()[startX][startY + i].setImg(Assets.shipBZ);
-						} catch(ArrayIndexOutOfBoundsException e) {}
-					}
+						bord.getTiles()[startX][startY + i].setCanPlace(false);
+						if(i == 0)
+							bord.getTiles()[startX][startY + i].setImg(Assets.shipBN);
+						else if(i > 0 && i < length - 1)
+							bord.getTiles()[startX][startY + i].setImg(Assets.shipMV);
+						else if(i == length - 1)
+							bord.getTiles()[startX][startY + i].setImg(Assets.shipBZ);
+					} catch(ArrayIndexOutOfBoundsException e) {}
 				}
 			}
 		}

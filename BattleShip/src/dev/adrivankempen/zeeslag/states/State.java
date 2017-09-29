@@ -2,6 +2,8 @@ package dev.adrivankempen.zeeslag.states;
 
 import java.awt.Graphics;
 
+import dev.adrivankempen.zeeslag.Handler;
+
 public abstract class State {
 	private static State currentState = null;
 	
@@ -11,6 +13,12 @@ public abstract class State {
 	
 	public static State getState() {
 		return currentState;
+	}
+	
+	protected Handler handler;
+	
+	public State(Handler handler) {
+		this.handler = handler;
 	}
 	
 	public abstract void tick();

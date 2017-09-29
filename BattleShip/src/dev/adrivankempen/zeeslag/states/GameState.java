@@ -2,12 +2,17 @@ package dev.adrivankempen.zeeslag.states;
 
 import java.awt.Graphics;
 
+import dev.adrivankempen.zeeslag.Handler;
 import dev.adrivankempen.zeeslag.game.bord.SpelerBord;
 import dev.adrivankempen.zeeslag.game.bord.TegenstanderBord;
 
 public class GameState extends State {
-	private SpelerBord spelerBord = new SpelerBord(20, 20);
-	private TegenstanderBord tegenstanderBord = new TegenstanderBord(460, 20);
+	public GameState(Handler handler) {
+		super(handler);
+	}
+
+	private SpelerBord spelerBord = new SpelerBord(20, 20, handler);
+	private TegenstanderBord tegenstanderBord = new TegenstanderBord(460, 20, handler);
 	
 	@Override
 	public void tick() {

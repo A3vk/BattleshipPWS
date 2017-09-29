@@ -3,6 +3,7 @@ package dev.adrivankempen.zeeslag.game.bord;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 
+import dev.adrivankempen.zeeslag.Handler;
 import dev.adrivankempen.zeeslag.game.Tile;
 import dev.adrivankempen.zeeslag.gfx.ImageLoader;
 
@@ -10,9 +11,9 @@ public class Bord {
 	private final int SIZE = 10;
 	
 	private int x, y;
-	private Tile[][] tiles;
+	protected Tile[][] tiles;
 	
-	public Bord(int x, int y) {
+	public Bord(int x, int y, Handler handler) {
 		this.x = x;
 		this.y = y;
 		
@@ -20,7 +21,7 @@ public class Bord {
 		
 		for(int i = 0; i < SIZE; i++) {
 			for(int j = 0; j < SIZE; j++) {
-				getTiles()[i][j] = new Tile(i, j, x, y);
+				tiles[i][j] = new Tile(i, j, x, y, handler);
 			}
 		}
 	}
@@ -33,16 +34,27 @@ public class Bord {
 		g.drawImage(ImageLoader.loadImage("/textures/Bord.png"), x, y, null);
 		for(int i = 0; i < SIZE; i++) {
 			for(int j = 0; j < SIZE; j++) {
-				getTiles()[i][j].render(g);
+				tiles[i][j].render(g);
 			}
 		}
+	}
+	
+	protected String click() {
+		for(int i = 0; i < SIZE; i++) {
+			for(int j = 0; j < SIZE; j++) {
+				if(tiles[i][j].hover() != null) {
+					return tiles[i][j].hover();
+				}
+			}
+		}
+		return null;
 	}
 	
 	public Tile getTile(String Id) {		
 		for(int i = 0; i < SIZE; i++) {
 			for(int j = 0; j < SIZE; j++) {
-				if (getTiles()[i][j].getId().equals(Id)) {
-					return getTiles()[i][j];
+				if (tiles[i][j].getId().equals(Id)) {
+					return tiles[i][j];
 				}
 			}
 		}
