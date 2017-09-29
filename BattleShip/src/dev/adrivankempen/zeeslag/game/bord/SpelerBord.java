@@ -8,7 +8,7 @@ import dev.adrivankempen.zeeslag.game.ship.Ship;
 import dev.adrivankempen.zeeslag.game.ship.Slagschip;
 
 public class SpelerBord extends Bord {
-	//Ship to call the check code: LOOK FOR FIX
+	//LOOK FOR FIX --> CODE WERKT NU ZOEK, misschien zoeken naar andere oplossing
 	private final Ship ship = new Ship(0, 0, 0, 0, this);
 	
 	private Slagschip slagschip;

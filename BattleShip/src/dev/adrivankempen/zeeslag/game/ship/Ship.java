@@ -26,7 +26,7 @@ public class Ship {
 							return false;
 						}
 					} catch(ArrayIndexOutOfBoundsException e) {
-						if((startX < 0 && startY < 0) || (startX + l - 1 > 9 || startY > 9)) {
+						if((x < 0 && y < 0) || (x + l - 1 > 9 || y > 9)) {
 							return false;
 						}
 					}
@@ -40,7 +40,7 @@ public class Ship {
 							return false;
 						}
 					} catch(ArrayIndexOutOfBoundsException e) {
-						if((startX < 0 && startY < 0) || (startX > 9 || startY + l - 1 > 9)) {
+						if((x < 0 && y < 0) || (x > 9 || y + l - 1 > 9)) {
 							return false;
 						}
 					}
