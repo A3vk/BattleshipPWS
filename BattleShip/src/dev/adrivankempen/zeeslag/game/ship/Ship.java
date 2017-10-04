@@ -1,10 +1,14 @@
 package dev.adrivankempen.zeeslag.game.ship;
 
+import java.awt.image.BufferedImage;
+
 import dev.adrivankempen.zeeslag.game.bord.Bord;
 import dev.adrivankempen.zeeslag.gfx.Assets;
 
 public class Ship {
 	private int length, direction, startX, startY;
+	private boolean preview = false;
+	private BufferedImage[] tempImg = new BufferedImage[5];
 	private Bord bord;
 	
 	public Ship(int l, int d, int startX, int startY, Bord bord) {
@@ -13,6 +17,10 @@ public class Ship {
 		this.startX = startX;
 		this.startY = startY;
 		this.bord = bord;
+		
+		for(int i = 0; i < tempImg.length; i++) {
+			tempImg[i] = Assets.leeg;
+		}
 		
 		placeShip();
 	}
@@ -55,7 +63,9 @@ public class Ship {
 			if(checkPosition(direction, length, startX, startY, bord)) {
 				for(int i = 0; i < length; i++) {
 					try {
-						bord.getTiles()[startX + i][startY].setCanPlace(false);
+						if(preview == false) {
+							bord.getTiles()[startX + i][startY].setCanPlace(false);
+						}
 						if(i == 0) 
 							bord.getTiles()[startX + i][startY].setImg(Assets.shipBW);
 						else if(i > 0 && i < length - 1)
@@ -69,7 +79,9 @@ public class Ship {
 			if(checkPosition(direction, length, startX, startY, bord)) {
 				for(int i = 0; i < length; i++) {
 					try {
-						bord.getTiles()[startX][startY + i].setCanPlace(false);
+						if(preview == false) {
+							bord.getTiles()[startX][startY + i].setCanPlace(false);
+						}
 						if(i == 0)
 							bord.getTiles()[startX][startY + i].setImg(Assets.shipBN);
 						else if(i > 0 && i < length - 1)
@@ -80,6 +92,45 @@ public class Ship {
 				}
 			}
 		}
+	}
+	
+	public void preview(int d, int x, int y) {		
+		if(d != startX || x != startX || y != startX) {
+			if(direction == 0){
+				for(int i = 0; i < length; i++) {
+					try {
+						bord.getTiles()[startX + i][startY].setImg(tempImg[i]);
+					} catch(ArrayIndexOutOfBoundsException e) {}
+				}
+			} else if(direction == 1) {
+				for(int i = 0; i < length; i++) {
+					try {
+						bord.getTiles()[startX][startY + i].setImg(tempImg[i]);
+					} catch(ArrayIndexOutOfBoundsException e) {}
+				}
+			}
+			
+			direction = d;
+			startX = x;
+			startY = y;
+		
+			if(direction == 0){
+				for(int i = 0; i < length; i++) {
+					try {
+						tempImg[i] = bord.getTiles()[startX + i][startY].getImg();
+					} catch(ArrayIndexOutOfBoundsException e) {}
+				}
+			} else if(direction == 1) {
+				for(int i = 0; i < length; i++) {
+					try {
+						tempImg[i] = bord.getTiles()[startX][startY + i].getImg();
+					} catch(ArrayIndexOutOfBoundsException e) {}
+				}
+			}
+		}
+		preview = true;
+		placeShip();
+		preview = false;
 	}
 	
 	public int getStartX() {
