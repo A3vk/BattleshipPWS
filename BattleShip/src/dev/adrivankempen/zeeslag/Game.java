@@ -22,7 +22,9 @@ public class Game implements Runnable{
 	
 	private Handler handler;
 	
+	@SuppressWarnings("unused")
 	private State gameState;
+	private State setupState;
 	
 	private MouseManager mouseManager;
 	
@@ -45,7 +47,8 @@ public class Game implements Runnable{
 		Assets.init();
 		
 		gameState = new GameState(handler);
-		State.setState(gameState);
+		setupState = new GameState(handler);
+		State.setState(setupState);
 	}
 	
 	private void tick() {
