@@ -13,9 +13,13 @@ public class Bord {
 	private int x, y;
 	protected Tile[][] tiles;
 	
+	protected Handler handler;
+	
 	public Bord(int x, int y, Handler handler) {
 		this.x = x;
 		this.y = y;
+		this.handler = handler;
+		handler.setAttackState(false);
 		
 		setTiles(new Tile[SIZE][SIZE]);
 		

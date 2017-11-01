@@ -15,8 +15,6 @@ public class SpelerBord extends Bord {
 	private int currentIndex = 0;
 	private int direction = 0;
 	
-	private Handler handler;
-	
 	public SpelerBord(int x, int y, Handler handler) {
 		super(x, y, handler);
 		
@@ -25,25 +23,25 @@ public class SpelerBord extends Bord {
 		fregat1 = new Fregat(0, -1, -1, this);
 		fregat2 = new Fregat(0, -1, -1, this);
 		mijnveger = new Mijnveger(0, -1, -1, this);
-		
-		this.handler = handler;
 	}
 	
 	@Override
 	public void tick() {
-		if(handler.getMouseManager().getRightPressed()) {
-			handler.getMouseManager().setRightPressed();
-			if(direction == 0) {
-				direction = 1;
+		if(!handler.getAttackFase()) {
+			if(handler.getMouseManager().getRightPressed()) {
+				handler.getMouseManager().setRightPressed();
+				if(direction == 0) {
+					direction = 1;
+				}
+				else {
+					direction = 0;
+				}
+			} else if(handler.getMouseManager().getLeftPressed()) {
+				handler.getMouseManager().setLeftPressed();
+				place();
 			}
-			else {
-				direction = 0;
-			}
-		} else if(handler.getMouseManager().getLeftPressed()) {
-			handler.getMouseManager().setLeftPressed();
-			place();
+			preview();
 		}
-		preview();
 	}
 	
 	private void place() {
@@ -72,7 +70,7 @@ public class SpelerBord extends Bord {
 				if(mijnveger.checkPosition(direction, 2, getTile(click()).getCoorX(), getTile(click()).getCoorY(), this)) {
 					mijnveger = new Mijnveger(direction, getTile(click()).getCoorX(), getTile(click()).getCoorY(), this);
 					currentIndex++;
-					System.out.println("ALL PLACED");
+					handler.setAttackState(true);
 				}
 			}
 		}

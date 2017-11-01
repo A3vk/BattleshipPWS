@@ -2,6 +2,7 @@ package dev.adrivankempen.zeeslag.game;
 
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
+import java.util.Random;
 
 import dev.adrivankempen.zeeslag.Handler;
 import dev.adrivankempen.zeeslag.gfx.Assets;
@@ -13,15 +14,21 @@ public class Tile {
 	
 	private int coorX, coorY;
 	private int x, y;
+	private int rand;
+	
 	private String Id;
+	
 	private boolean canPlace = true;
+	private boolean hasShip = false;
+	private boolean clicked = false;
+	private boolean isShot = false;
 	
 	private BufferedImage img = Assets.leeg;
 	private BufferedImage tempImg = img;
 	
-	private Handler handler;
+	private Random random = new Random();
 	
-	private boolean clicked = false;
+	private Handler handler;
 	
 	public Tile(int x, int y, int startX, int startY , Handler handler) {
 		coorX = x;
@@ -36,7 +43,7 @@ public class Tile {
 	}
 	
 	public void tick() {
-		hover();
+		
 	}
 	
 	public void render(Graphics g) {
@@ -51,6 +58,20 @@ public class Tile {
 			return Id;
 		}
 		return null;
+	}
+	
+	public void attack() {
+		if(!isShot) {
+			rand = random.nextInt(3) + 1;
+			if(rand == 1) {
+				setImg(Assets.mis1);
+			} else if(rand == 2) {
+				setImg(Assets.mis2);
+			} else if(rand == 3) {
+				setImg(Assets.mis3);
+			}
+			isShot = true;
+		}
 	}
 	
 	public boolean isClicked() {
@@ -96,9 +117,24 @@ public class Tile {
 		return canPlace;
 	}
 
-	public void setCanPlace(boolean bool) {
-		setImg(Assets.full);
-		canPlace = bool;
+	public void setCanPlace(boolean b) {
+		canPlace = b;
+	}
+	
+	public boolean getHasShip() {
+		return hasShip;
+	}
+
+	public void setHasShip(boolean b) {
+		hasShip = b;
+	}
+	
+	public boolean getIsShot() {
+		return isShot;
+	}
+
+	public void setIsShot(boolean b) {
+		isShot = b;
 	}
 
 	public BufferedImage getTempImg() {

@@ -4,6 +4,7 @@ import dev.adrivankempen.zeeslag.input.MouseManager;
 
 public class Handler {
 	private Game game;
+	private boolean attackFase;
 	
 	public Handler(Game game) {
 		this.game = game;
@@ -19,5 +20,13 @@ public class Handler {
 
 	public void setGame(Game game) {
 		this.game = game;
+	}
+	
+	public boolean getAttackFase() {
+		return attackFase;
+	}
+	
+	public void setAttackState(boolean b) {
+		attackFase = b;
 	}
 }

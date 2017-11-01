@@ -81,6 +81,7 @@ public class Ship {
 					try {
 						if(preview == false) {
 							bord.getTiles()[startX][startY + i].setCanPlace(false);
+							bord.getTiles()[startX][startY + i].setHasShip(true);
 						}
 						if(i == 0)
 							bord.getTiles()[startX][startY + i].setImg(Assets.shipBN);
