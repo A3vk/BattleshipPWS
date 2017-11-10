@@ -9,6 +9,10 @@ public class Display {
 	private JFrame frame;
 	private Canvas canvas;
 	
+	/*
+	 * title: de titel van het scherm
+	 * width, height: de hoogte en breedte van het scherm
+	 */
 	private String title;
 	private int width, height;
 	
@@ -20,6 +24,7 @@ public class Display {
 		CreateDisplay();
 	}
 	
+	/**creëer het scherm en stel het goed in*/
 	private void CreateDisplay() {
 		frame = new JFrame(title);
 		frame.setSize(width, height);

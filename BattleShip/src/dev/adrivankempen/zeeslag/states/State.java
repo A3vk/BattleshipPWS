@@ -4,6 +4,7 @@ import java.awt.Graphics;
 
 import dev.adrivankempen.zeeslag.Handler;
 
+/**de State class houd bij welke state er op dit moment actief is en zorgt dat die state een tick en een render krijgen*/
 public abstract class State {
 	private static State currentState = null;
 	

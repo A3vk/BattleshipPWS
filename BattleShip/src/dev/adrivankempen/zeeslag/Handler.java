@@ -2,6 +2,7 @@ package dev.adrivankempen.zeeslag;
 
 import dev.adrivankempen.zeeslag.input.MouseManager;
 
+/**De Handler zorgt ervoor dat alle algemenen variabelen en inputs worden doorgegeven*/
 public class Handler {
 	private Game game;
 	private boolean attackFase;
@@ -26,7 +27,7 @@ public class Handler {
 		return attackFase;
 	}
 	
-	public void setAttackState(boolean b) {
+	public void setAttackFase(boolean b) {
 		attackFase = b;
 	}
 }

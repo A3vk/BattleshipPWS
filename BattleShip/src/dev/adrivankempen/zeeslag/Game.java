@@ -7,9 +7,28 @@ import dev.adrivankempen.zeeslag.display.Display;
 import dev.adrivankempen.zeeslag.gfx.Assets;
 import dev.adrivankempen.zeeslag.input.MouseManager;
 import dev.adrivankempen.zeeslag.states.GameState;
+import dev.adrivankempen.zeeslag.states.SetupState;
 import dev.adrivankempen.zeeslag.states.State;
 
 public class Game implements Runnable{
+	/*
+	 * Display: 
+	 * title: de titel van het scherm
+	 * width, height: de lengte en hoogte van het scherm
+	 * 
+	 * running: controleert of dat het programma open staat
+	 * thread: 
+	 * 
+	 *  bs: regelt het renderen van de game
+	 *  g: regelt het renderen
+	 *  
+	 *  handler: algemenen variabelen en de inputs
+	 *  
+	 *  gameState: de state die de game zelf regelt
+	 *  setupState: de state waarbij je het spel kan beginnen (en instellingen aan kan passen)
+	 *  
+	 *  mouseManager: regelt mouse input
+	 */
 	private Display display;
 	private String title;
 	private int width, height;
@@ -22,8 +41,8 @@ public class Game implements Runnable{
 	
 	private Handler handler;
 	
-	@SuppressWarnings("unused")
 	private State gameState;
+	@SuppressWarnings("unused")
 	private State setupState;
 	
 	private MouseManager mouseManager;
@@ -37,6 +56,8 @@ public class Game implements Runnable{
 		mouseManager = new MouseManager();
 	}
 	
+	/**voegt de mouseManager toe aan het frame en de canvas,
+	 * laad de Assets in, regelt de State*/
 	private void init() {
 		display = new Display(title, width, height);
 		display.getJFrame().addMouseListener(handler.getMouseManager());
@@ -47,16 +68,20 @@ public class Game implements Runnable{
 		Assets.init();
 		
 		gameState = new GameState(handler);
-		setupState = new GameState(handler);
-		State.setState(setupState);
+		setupState = new SetupState(handler);
+		State.setState(gameState);
 	}
 	
+	/**hoofd tick methode*/
 	private void tick() {
+		//zorg dat de goede State de tick doorkrijgt
 		if(State.getState() != null)
 			State.getState().tick();
 	}
 	
+	/**hoofd render methode*/
 	private void render() {
+		//maak een nieuwe bufferstrategy
 		bs = display.getCanvas().getBufferStrategy();
 		
 		if(bs == null) {
@@ -69,18 +94,20 @@ public class Game implements Runnable{
 		//Clear screen
 		g.clearRect(0, 0, width, height);
 		
-		//Draw here
+		//zorg dat de goede State de render doorkrijgt
 		if(State.getState() != null)
 			State.getState().render(g);
-		//End draw
 		
+		//ga naar het volgende frame
 		bs.show();
 		g.dispose();
 	}
 	
+	/**regelt de game*/
 	public void run() {
 		init();
 		
+		//cap de fps bij 60 fps
 		int fps = 60;
 		double timePerTick = 1000000000 / fps;
 		double delta = 0;
@@ -117,6 +144,7 @@ public class Game implements Runnable{
 		return mouseManager;
 	}
 	
+	/**regelt het correct opstarten van de game*/
 	public synchronized void start() {
 		if(running)
 			return;
@@ -126,6 +154,7 @@ public class Game implements Runnable{
 		thread.start();
 	}
 	
+	/**regelt het correct afsluiten van de game*/
 	public synchronized void stop() {
 		if(!running)
 			return;

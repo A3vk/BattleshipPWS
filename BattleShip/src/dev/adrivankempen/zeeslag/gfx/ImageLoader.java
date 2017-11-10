@@ -5,6 +5,7 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
+/**laad een afbeelding in zodat je de afbeelding vervolgens kan renderen*/
 public class ImageLoader {
 	public static BufferedImage loadImage(String path) {
 		try {

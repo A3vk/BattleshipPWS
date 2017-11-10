@@ -8,7 +8,30 @@ import dev.adrivankempen.zeeslag.Handler;
 import dev.adrivankempen.zeeslag.gfx.Assets;
 
 public class Tile {	
-	private final int WIDTH = 40;
+	/*
+	 * SIZE: de groote van de tegel
+	 * RAND: de groote van de rand van het bord
+	 * alphabet: de letters die gebruikt kunnen worden voor het Id
+	 * 
+	 * coorX, coorY: de x en y coördinaat van het bord
+	 * x, y: de x en y coördinaat van de tegel
+	 * rand: random getal generator
+	 * 
+	 * Id: het Id van de Tile (bv. A3, I8, E4)
+	 * 
+	 * canPlace: kan er een schip geplaatst worden
+	 * hasShip: staat er een schip op deze tegel
+	 * clicked: is er op deze tegel geklikt
+	 * isShot: is deze tegel aangevallen
+	 * 
+	 * img: de afbeelding van de Tile
+	 * tempImg: de tijdelijke afbeelding van de Tile
+	 * 
+	 * random: random getallen generator
+	 * 
+	 * handler: algemenen variabelen en inputs
+	 */
+	private final int SIZE = 40;
 	private final int RAND = 20;
 	private final String[] alphabet = {"A", "B", "C", "D", "E", "F", "G", "H", "I", "J"};
 	
@@ -30,39 +53,43 @@ public class Tile {
 	
 	private Handler handler;
 	
+	/**maak en plaats de tegel*/
 	public Tile(int x, int y, int startX, int startY , Handler handler) {
 		coorX = x;
 		coorY = y;
 		
-		this.x = RAND + WIDTH * x + startX;
-		this.y = RAND + WIDTH * y + startY;
+		this.x = RAND + SIZE * x + startX;
+		this.y = RAND + SIZE * y + startY;
 		
 		this.handler = handler;
 		
 		Id = createId();
 	}
 	
-	public void tick() {
-		
-	}
-	
+	/**render de tegel*/
 	public void render(Graphics g) {
 		g.drawImage(img, x, y, null);
 	}
 	
+	/**is de muis op deze tegel*/
 	public String hover() {
+		//controleer ofdat de coördinaten van de muis binnen de coördinaten van de tegel zijn
 		if(handler.getMouseManager().getMouseX() >= x &&
-				handler.getMouseManager().getMouseX() <= x + WIDTH &&
+				handler.getMouseManager().getMouseX() <= x + SIZE &&
 				handler.getMouseManager().getMouseY() >= y &&
-				handler.getMouseManager().getMouseY() <= y + WIDTH) {
+				handler.getMouseManager().getMouseY() <= y + SIZE) {
 			return Id;
 		}
 		return null;
 	}
-	
+
+	/**val de tegel aan*/
 	public void attack() {
+		//controleer ofdat de tegel niet al eerder is aangevallen
 		if(!isShot) {
+			//creëer een random getal
 			rand = random.nextInt(3) + 1;
+			//verander de afbeelding
 			if(rand == 1) {
 				setImg(Assets.mis1);
 			} else if(rand == 2) {
@@ -74,14 +101,7 @@ public class Tile {
 		}
 	}
 	
-	public boolean isClicked() {
-		return clicked;
-	}
-
-	public void setClicked(boolean clicked) {
-		this.clicked = clicked;
-	}
-
+	/**maak het Id van de tegel*/
 	private String createId() {
 		String Id1;
 		String Id2;
@@ -91,6 +111,20 @@ public class Tile {
 		
 		return (Id1 + Id2);
 	}
+	
+	/**verander de afbeelding van de tegel*/
+	public void setImg(BufferedImage img) {
+		this.img = img;
+		setTempImg(img);
+	}
+	
+	public boolean isClicked() {
+		return clicked;
+	}
+
+	public void setClicked(boolean clicked) {
+		this.clicked = clicked;
+	}	
 	
 	public int getCoorX() {
 		return coorX;
@@ -106,11 +140,6 @@ public class Tile {
 	
 	public BufferedImage getImg() {
 		return img;
-	}
-	
-	public void setImg(BufferedImage img) {
-		this.img = img;
-		setTempImg(img);
 	}
 
 	public boolean getCanPlace() {

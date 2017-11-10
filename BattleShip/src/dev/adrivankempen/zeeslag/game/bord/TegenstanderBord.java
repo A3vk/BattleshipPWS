@@ -9,10 +9,14 @@ public class TegenstanderBord extends Bord{
 	
 	@Override
 	public void tick() {
+		//Als de aanval fase begint kan op dit scherm aangevallen worden door P1
 		if(handler.getAttackFase()) {
+			//controleer of er met de linker muisknop gedrukt word
 			if(handler.getMouseManager().getLeftPressed()) {
 				handler.getMouseManager().setLeftPressed();
-				getTile(click()).attack();
+				try{
+					getTile(hover()).attack();
+				} catch(NullPointerException e) {}
 			}
 		}
 	}
