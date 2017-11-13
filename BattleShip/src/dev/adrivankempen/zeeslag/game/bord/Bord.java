@@ -20,6 +20,12 @@ public class Bord {
 	 * currentShip: de richting van het schip dat nu geplaatst wordt
 	 * currentLength: de lengte van het schip dat nu geplaatst wordt
 	 * oldD, oldL, oldX, oldY: de oude informatie om de preview weg te halen
+	 * 
+	 * turnP1, turnP2: variabele dat bij houd wie zijn beurt het is
+	 * 
+	 * tiles: het coördinaten systeem van het bord
+	 * handler: algemenen variabelen en de inputs
+	 * tempImg: het array dat gebruikt wordt om de preview te laten werken
 	 */
 	private final int SIZE = 10;
 	private int bordX, bordY;
@@ -27,14 +33,17 @@ public class Bord {
 	private int currentShip = 0;
 	private int currentLength = 5;
 	private int oldD, oldL, oldX, oldY;
+	private int shipsLeft = 5;
 	
-	//tiles: het coördinaten systeem van het bord
+	private Slagschip slagschip;
+	private Kruiser kruiser;
+	private Fregat fregat1, fregat2;
+	private Mijnveger mijnveger;
+	
+	private boolean visible = true;
+	
 	protected Tile[][] tiles;
-	
-	//handler: algemenen variabelen en de inputs
 	protected Handler handler;
-	
-	//het array dat gebruikt wordt om de preview te laten werken
 	private BufferedImage[] tempImg = new BufferedImage[5];
 	
 	/**creëer het bord*/
@@ -42,7 +51,6 @@ public class Bord {
 		this.bordX = x;
 		this.bordY = y;
 		this.handler = handler;
-		handler.setAttackFase(false);
 		
 		//stel de groote van het bord in
 		tiles = new Tile[SIZE][SIZE];
@@ -84,39 +92,46 @@ public class Bord {
 	}	
 	
 	/**regelt het plaatsen en creëren van de schepen*/
-	protected void placeShip(Bord bord) {
+	public void placeShip(Bord bord, Tile tile, int d) {
+		int x = tile.getCoorX();
+		int y = tile.getCoorY();
+		
 		//controleer welk schip geplaatst moet worden
 		if(currentShip == 0) {
 			//controleer ofdat het schip geplaatst kan worden
-			if(checkPosition()) {
+			if(checkPosition(x, y, d)) {
 				//maak een niew schip
-				new Slagschip(direction, getTile(hover()).getCoorX(), getTile(hover()).getCoorY(), bord);
+				slagschip = new Slagschip(d, tile, visible, bord);
 				//pas de lengte aan van het volgende schip en ga naar het vogende schip
 				currentLength--;
 				currentShip++;
 			}
 		} else if(currentShip == 1) {
-			if(checkPosition()) {
-				new Kruiser(direction, getTile(hover()).getCoorX(), getTile(hover()).getCoorY(), bord);
+			if(checkPosition(x, y, d)) {
+				kruiser = new Kruiser(d, tile, visible, bord);
 				currentLength--;
 				currentShip++;
 			}
 		} else if(currentShip == 2) {
-			if(checkPosition()) {
-				new Fregat(direction, getTile(hover()).getCoorX(), getTile(hover()).getCoorY(), bord);
+			if(checkPosition(x, y, d)) {
+				fregat1 = new Fregat(d, tile, visible, bord);
 				currentShip++;
 			}
 		} else if(currentShip == 3) {
-			if(checkPosition()) {
-				new Fregat(direction, getTile(hover()).getCoorX(), getTile(hover()).getCoorY(), bord);
+			if(checkPosition(x, y, d)) {
+				fregat2 = new Fregat(d, tile, visible, bord);
 				currentLength--;
 				currentShip++;
 			}
 		} else if(currentShip == 4) {
-			if(checkPosition()) {
-				new Mijnveger(direction, getTile(hover()).getCoorX(), getTile(hover()).getCoorY(), bord);
+			if(checkPosition(x, y, d)) {
+				mijnveger = new Mijnveger(d, tile, visible, bord);
 				currentShip++;
-				handler.setAttackFase(true);
+				if(handler.getTurnP2()) {
+					handler.switchFase();
+				} else {
+					handler.switchTurn();
+				}
 			}
 		}
 	}
@@ -149,7 +164,7 @@ public class Bord {
 		oldL = currentLength;
 		
 		//controleer ofdat er een preview geplaatst kan worden
-		if(checkPosition()) {
+		if(checkPosition(oldX, oldY, oldD)) {
 			//controleer de richting waaarin de preview geplaatst moet worden
 			if(direction == 0){
 				//loop door de Tiles waar de preview geplaatst moet worden
@@ -181,34 +196,34 @@ public class Bord {
 	}
 
 	/**controleer ofdat er een schip geplaatst kan worden op de huidige positie*/
-	private boolean checkPosition() {		
+	private boolean checkPosition(int x, int y, int d) {
 		//controleer de richting waarin het schip geplaatst wordt
-		if(direction == 0) {
+		if(d == 0) {
 			//kijk op de tegels van en rondom het schip
 			for(int i = -1; i < currentLength + 1; i++) {
 				for(int j = -1; j <= 1; j++) {
 					try {
 						//contoleer ofdat er nog geen schip staat
-						if(!getTiles()[getTile(hover()).getCoorX() + i][getTile(hover()).getCoorY() + j].getCanPlace()) {
+						if(!getTiles()[x + i][y + j].getCanPlace()) {
 							return false;
 						}
 					} catch(ArrayIndexOutOfBoundsException e) {
 						//controleer ofdat de muis binnen het bord is
-						if(getTile(hover()).getCoorX() < 0 && getTile(hover()).getCoorY() < 0 || getTile(hover()).getCoorX() + currentLength - 1 > 9 || getTile(hover()).getCoorY() > 9) {
+						if(x < 0 && y < 0 || x + currentLength - 1 > 9 || y > 9) {
 							return false;
 						}
 					}
 				}
 			}
-		} else if(direction == 1) {
+		} else if(d == 1) {
 			for(int i = -1; i < currentLength + 1; i++) {
 				for(int j = -1; j <= 1; j++) {
 					try {
-						if(!getTiles()[getTile(hover()).getCoorX() + j][getTile(hover()).getCoorY() + i].getCanPlace()) {
+						if(!getTiles()[x + j][y + i].getCanPlace()) {
 							return false;
 						}
 					} catch(ArrayIndexOutOfBoundsException e) {
-						if(getTile(hover()).getCoorX() < 0 && getTile(hover()).getCoorY() < 0 || getTile(hover()).getCoorX() > 9 || getTile(hover()).getCoorY() + currentLength - 1 > 9) {
+						if(x < 0 && y < 0 || x > 9 || y + currentLength - 1 > 9) {
 							return false;
 						}
 					}
@@ -218,7 +233,22 @@ public class Bord {
 		//als er niet eerder false terugegeven wordt kan er een schip geplaatst worden
 		return true;
 	}
+			
+	protected int updateShips() {
+		if(slagschip.update())
+			shipsLeft--;
+		else if(kruiser.update())
+			shipsLeft--;
+		else if(fregat1.update())
+			shipsLeft--;
+		else if(fregat2.update())
+			shipsLeft--;
+		else if(mijnveger.update())
+			shipsLeft--;
 		
+		return shipsLeft;
+	}
+	
 	/**krijg een Tile door middel van een Id*/
 	public Tile getTile(String Id) {	
 		//loop door alle Tiles heen

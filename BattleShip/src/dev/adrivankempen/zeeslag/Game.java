@@ -40,12 +40,11 @@ public class Game implements Runnable{
 	private Graphics g;
 	
 	private Handler handler;
+	private MouseManager mouseManager;
 	
 	private State gameState;
 	@SuppressWarnings("unused")
 	private State setupState;
-	
-	private MouseManager mouseManager;
 	
 	public Game(String title, int width, int height) {
 		this.title = title;
@@ -131,7 +130,7 @@ public class Game implements Runnable{
 			}
 			
 			if(timer >= 1000000000) {
-				System.out.println("FPS: " + ticks);
+//				System.out.println("FPS: " + ticks);
 				ticks = 0;
 				timer = 0;
 			}

@@ -41,6 +41,8 @@ public class Tile {
 	
 	private String Id;
 	
+	private char piece = 'L';
+	
 	private boolean canPlace = true;
 	private boolean hasShip = false;
 	private boolean clicked = false;
@@ -87,15 +89,30 @@ public class Tile {
 	public void attack() {
 		//controleer ofdat de tegel niet al eerder is aangevallen
 		if(!isShot) {
-			//creëer een random getal
-			rand = random.nextInt(3) + 1;
-			//verander de afbeelding
-			if(rand == 1) {
-				setImg(Assets.mis1);
-			} else if(rand == 2) {
-				setImg(Assets.mis2);
-			} else if(rand == 3) {
-				setImg(Assets.mis3);
+			if(hasShip) {
+				if(piece == 'N') 
+					setImg(Assets.HshipBN);
+				else if(piece == 'O')
+					setImg(Assets.HshipBO);
+				else if(piece == 'W')
+					setImg(Assets.HshipBW);
+				else if(piece == 'Z')
+					setImg(Assets.HshipBZ);
+				else if(piece == 'H')
+					setImg(Assets.HshipMH);
+				else if(piece == 'V')
+					setImg(Assets.HshipMV);
+			} else {
+				//creëer een random getal
+				rand = random.nextInt(3) + 1;
+				//verander de afbeelding
+				if(rand == 1) {
+					setImg(Assets.mis1);
+				} else if(rand == 2) {
+					setImg(Assets.mis2);
+				} else if(rand == 3) {
+					setImg(Assets.mis3);
+				}
 			}
 			isShot = true;
 		}
@@ -116,6 +133,14 @@ public class Tile {
 	public void setImg(BufferedImage img) {
 		this.img = img;
 		setTempImg(img);
+	}
+	
+	public void setPiece(char p) {
+		piece = p;
+	}
+	
+	public char getPiece() {
+		return piece;
 	}
 	
 	public boolean isClicked() {
