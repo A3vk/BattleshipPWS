@@ -19,10 +19,13 @@ public class Tile {
 	 * 
 	 * Id: het Id van de Tile (bv. A3, I8, E4)
 	 * 
+	 * piece: het soort schip-tegel dat op deze tegel is geplaatst
+	 * 
 	 * canPlace: kan er een schip geplaatst worden
 	 * hasShip: staat er een schip op deze tegel
 	 * clicked: is er op deze tegel geklikt
 	 * isShot: is deze tegel aangevallen
+	 * isSunken: staat er op deze tegel een gezonken boot
 	 * 
 	 * img: de afbeelding van de Tile
 	 * tempImg: de tijdelijke afbeelding van de Tile
@@ -41,12 +44,14 @@ public class Tile {
 	
 	private String Id;
 	
-	private char piece = 'L';
+	//E = leeg
+	private char piece = 'E';
 	
 	private boolean canPlace = true;
 	private boolean hasShip = false;
 	private boolean clicked = false;
 	private boolean isShot = false;
+	private boolean isSunken = false;
 	
 	private BufferedImage img = Assets.leeg;
 	private BufferedImage tempImg = img;
@@ -86,11 +91,14 @@ public class Tile {
 	}
 
 	/**val de tegel aan*/
-	public void attack() {
+	public boolean attack() {
 		//controleer ofdat de tegel niet al eerder is aangevallen
 		if(!isShot) {
+			//controleer ofdat er een schip staat
 			if(hasShip) {
-				if(piece == 'N') 
+				//controleer wat voor soort tegel het van het schip is
+				if(piece == 'N')
+					//pas de afbeelding van de tegel aan
 					setImg(Assets.HshipBN);
 				else if(piece == 'O')
 					setImg(Assets.HshipBO);
@@ -102,6 +110,7 @@ public class Tile {
 					setImg(Assets.HshipMH);
 				else if(piece == 'V')
 					setImg(Assets.HshipMV);
+				return true;
 			} else {
 				//creëer een random getal
 				rand = random.nextInt(3) + 1;
@@ -116,6 +125,7 @@ public class Tile {
 			}
 			isShot = true;
 		}
+		return false;
 	}
 	
 	/**maak het Id van de tegel*/
@@ -133,6 +143,14 @@ public class Tile {
 	public void setImg(BufferedImage img) {
 		this.img = img;
 		setTempImg(img);
+	}
+	
+	public void setIsSunken() {
+		isSunken = true;
+	}
+	
+	public boolean getIsSunken() {
+		return isSunken;
 	}
 	
 	public void setPiece(char p) {

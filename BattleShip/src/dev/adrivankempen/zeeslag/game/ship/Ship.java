@@ -5,19 +5,30 @@ import dev.adrivankempen.zeeslag.game.bord.Bord;
 import dev.adrivankempen.zeeslag.gfx.Assets;
 
 public class Ship {
+	/*
+	 * length: de lengte van het schip
+	 * direction: de richting van het schip
+	 * startX: de x coördinaat van het schip
+	 * startY: de Y coördinaat van het schip
+	 * shipLeft: hoeveel tegels zijn er nog van het schip over
+	 * 
+	 * tile: de 'start' tegel van het schip
+	 * 
+	 * visible: is het schip zichtbaar
+	 * N, O, Z, W, H1, H2, H3, V1, V2, V3: de Tegels van een schip --> veranderd per richting/lengte
+	 * 
+	 * bord: een instantie van het bord 
+	 */
 	private int length, direction, startX, startY;
 	private int shipLeft;
+	
 	private Tile tile;
+	
 	private boolean visible;
 	private boolean N = true, O = true, Z = true, W = true, H1 = true, H2 = true, H3 = true, V1 = true, V2 = true, V3 = true;
+	
 	private Bord bord;
 	
-	/*
-	 * length is de lengte van het schip
-	 * direction is de richting het schip wordt geplaatst (0 voor horizontaal & 1 voor verticaal
-	 * startX en startY geven de begin positie van het schip aan
-	 * bord geeft aan op welk van de 2 borden het schip geplaatst wordt
-	 */
 	public Ship(int l, int d, Tile tile, boolean visible, Bord bord) {
 		length = l;
 		direction = d;
@@ -30,6 +41,7 @@ public class Ship {
 		
 		shipLeft = length;
 		
+		//pas de controle variabelen aan ten opzichte van de lengte
 		if(length == 4) {
 			H3 = false;
 			V3 = false;
@@ -104,13 +116,20 @@ public class Ship {
 		}
 	}
 	
+	/**controleer of dat een deel van het schip is geraakt*/
 	public boolean update() {
+		//controleer of dat het schip nog niet gezonken is
 		if(shipLeft != 0) {
+			//controleer de richting
 			if(direction == 0) {
+				//loop door de lengte
 				for(int i = 0; i < length; i++) {
 					if(i == 0) {
+						//controleer ofdat het schip nog niet is geraakt
 						if(bord.getTiles()[startX + i][startY].getImg() == Assets.HshipBW)
+							//controleer ofdat de variabelen nog niet is aangepast
 							if(W) {
+								//pas de variabelen aan
 								W = false;
 								shipLeft--;
 							}
@@ -163,7 +182,8 @@ public class Ship {
 					}
 				}
 			}
-		
+			
+			//als er geen tegels meer over zijn in het schip laat dan het schip zinken
 			if(shipLeft == 0) {
 				sink();
 				return true;
@@ -172,25 +192,36 @@ public class Ship {
 		return false;
 	}
 	
+	/**laat het schip zinken als er geen tegels meer ongeraakt zijn*/
 	private void sink() {
+		//controleer de richting
 		if(direction == 0) {
+			//loop door de lengte
 			for(int i = 0; i < length; i++) {
 					if(i == 0) {
+						//pas de afbeelding van de tegel aan
 						bord.getTiles()[startX + i][startY].setImg(Assets.SshipBW);
+						//pas het variabelen aan
+						bord.getTiles()[startX + i][startY].setIsSunken();
 					}else if(i > 0 && i < length - 1) {
 						bord.getTiles()[startX + i][startY].setImg(Assets.SshipMH);
+						bord.getTiles()[startX + i][startY].setIsSunken();
 					}else if(i == length - 1) {
 						bord.getTiles()[startX + i][startY].setImg(Assets.SshipBO);
+						bord.getTiles()[startX + i][startY].setIsSunken();
 					}
 			}
 		} else if(direction == 1) {
 			for(int i = 0; i < length; i++) {
 				if(i == 0) {
 					bord.getTiles()[startX][startY + i].setImg(Assets.SshipBN);
+					bord.getTiles()[startX][startY + i].setIsSunken();
 				}else if(i > 0 && i < length - 1) {
 						bord.getTiles()[startX][startY + i].setImg(Assets.SshipMV);
+						bord.getTiles()[startX][startY + i].setIsSunken();
 				}else if(i == length - 1) {
 						bord.getTiles()[startX][startY + i].setImg(Assets.SshipBZ);
+						bord.getTiles()[startX][startY + i].setIsSunken();
 				}
 			}
 		}
