@@ -13,7 +13,6 @@ public class SpelerBord extends Bord {
 	private AI ai;
 	private Tile tile;
 	
-	//TODO: Maak de AI slimmer
 	@SuppressWarnings("unused")
 	private boolean specialAttack;
 	@SuppressWarnings("unused")
@@ -48,7 +47,6 @@ public class SpelerBord extends Bord {
 			try{
 				//voer de aanval uit
 				tile.attack();
-				//TODO: Maak de AI slimmer
 //				if(!specialAttack) {
 //					if(!tile.getIsShot()) {
 //						if(tile.attack()) {
