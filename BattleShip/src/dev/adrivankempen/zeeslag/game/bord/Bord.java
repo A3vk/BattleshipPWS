@@ -20,8 +20,15 @@ public class Bord {
 	 * currentShip: de richting van het schip dat nu geplaatst wordt
 	 * currentLength: de lengte van het schip dat nu geplaatst wordt
 	 * oldD, oldL, oldX, oldY: de oude informatie om de preview weg te halen
+	 * shipsLeft: hoeveel schepen er nog over zijn
 	 * 
-	 * turnP1, turnP2: variabele dat bij houd wie zijn beurt het is
+	 * slagschip: een 5 lang schip, bewaard de schip class zodat die opnieuw opgeroepen kan worden
+	 * kruiser: een 4 lang schip, bewaard de schip class zodat die opnieuw opgeroepen kan worden
+	 * fregat1: een 3 lang schip, bewaard de schip class zodat die opnieuw opgeroepen kan worden
+	 * fregat2: een 3 lang schip, bewaard de schip class zodat die opnieuw opgeroepen kan worden
+	 * mijnveger: een 2 lang schip, bewaard de schip class zodat die opnieuw opgeroepen kan worden
+	 * 
+	 * visible: bepaald ofdat de schepen die op dit moment geplaatst worden zichtbaar zijn
 	 * 
 	 * tiles: het coördinaten systeem van het bord
 	 * handler: algemenen variabelen en de inputs
@@ -129,9 +136,8 @@ public class Bord {
 				currentShip++;
 				if(handler.getTurnP2()) {
 					handler.switchFase();
-				} else {
-					handler.switchTurn();
 				}
+				handler.switchTurn();
 			}
 		}
 	}
@@ -233,9 +239,12 @@ public class Bord {
 		//als er niet eerder false terugegeven wordt kan er een schip geplaatst worden
 		return true;
 	}
-			
+	
+	/**controleer ofdat een schip na de aanval gezonken is*/
 	protected int updateShips() {
+		//update het schip
 		if(slagschip.update())
+			//als het schip gezonken is haal 1 van shipsLeft af
 			shipsLeft--;
 		else if(kruiser.update())
 			shipsLeft--;
@@ -246,6 +255,7 @@ public class Bord {
 		else if(mijnveger.update())
 			shipsLeft--;
 		
+		//return het aantal schepen dat nog niet gezonken is
 		return shipsLeft;
 	}
 	
