@@ -47,7 +47,7 @@ public class Bord {
 	private Fregat fregat1, fregat2;
 	private Mijnveger mijnveger;
 	
-	private boolean visible = true;
+	private boolean visible = false;
 	
 	protected Tile[][] tiles;
 	protected Handler handler;
@@ -272,6 +272,10 @@ public class Bord {
 		}
 		//als er geen Tile is met het opgegeven Id return null
 		return null;
+	}
+	
+	public Tile translate(Tile tile, int x, int y) {
+		return tiles[tile.getCoorX() + x][tile.getCoorY() + y];
 	}
 	
 	public void changeImg(String Id, BufferedImage img) {

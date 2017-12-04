@@ -1,7 +1,8 @@
 package dev.adrivankempen.zeeslag.game.bord;
 
+import java.util.concurrent.TimeUnit;
+
 import dev.adrivankempen.zeeslag.Handler;
-import dev.adrivankempen.zeeslag.game.Tile;
 import dev.adrivankempen.zeeslag.game.AI.AI;
 
 public class SpelerBord extends Bord {
@@ -11,14 +12,6 @@ public class SpelerBord extends Bord {
 	 */
 	
 	private AI ai;
-	private Tile tile;
-	
-	@SuppressWarnings("unused")
-	private boolean specialAttack;
-	@SuppressWarnings("unused")
-	private Tile[] specialAttackTiles = new Tile[5];
-	@SuppressWarnings("unused")
-	private int currentIndex = 0;
 	
 	public SpelerBord(int x, int y, Handler handler) {
 		super(x, y, handler);
@@ -42,32 +35,17 @@ public class SpelerBord extends Bord {
 	private void attack() {
 		//is het de beurt van P2
 		if(handler.getTurnP2()) {
-			//creëer een random tegel
-			tile = ai.randomTile();
-			try{
-				//voer de aanval uit
-				tile.attack();
-//				if(!specialAttack) {
-//					if(!tile.getIsShot()) {
-//						if(tile.attack()) {
-//							specialAttackTiles[currentIndex] = tile;
-//							currentIndex++;
-//							specialAttack = true;
-//						} else {
-//							if(specialAttackTiles[0].getIsSunken()) {
-//								
-//							}
-//						}
-//					} else {
-//						
-//					}
-					//als alle schepen gezonken zijn heeft P2 gewonnen
-					if(updateShips() == 0)
-						System.out.println("P2 heeft gewonnen");
-					//wissel de beurt
-					handler.switchTurn();
-//				}
-			} catch(NullPointerException e) {}
+			//Wacht 1 seconde
+			try {
+				TimeUnit.SECONDS.sleep(1);
+			} catch (InterruptedException e) {}
+			//laat de AI aanvallen
+			ai.attack();
+				//als alle schepen gezonken zijn heeft P2 gewonnen
+				if(updateShips() == 0)
+					System.out.println("P2 heeft gewonnen");
+				//wissel de beurt
+				handler.switchTurn();
 		}
 	}
 	

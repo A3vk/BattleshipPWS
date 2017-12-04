@@ -18,10 +18,13 @@ public class AI {
 	 * random: regelt de random getallen
 	 */
 	private Bord bord;
-	private Tile returnTile;
-	private int randomDirection;
-	
-	private int x, y, d;
+	private Tile[] hits = new Tile[5];
+	private Tile currentTile;
+	private Tile firstHit;
+	private boolean afterHit = false;
+	private boolean newDirection = true;
+	private int attackDirection;
+	private int currentIndex = 0;
 	
 	private Random random = new Random();
 	
@@ -29,30 +32,161 @@ public class AI {
 		this.bord = bord;
 	}
 	
+	public void attack() {
+		try {
+			if(firstHit.getIsSunken()) {
+				System.out.println("RESET");
+				afterHit = false;
+				currentIndex = 0;
+				newDirection = true;
+			}
+		} catch (NullPointerException e) {}
+		
+		if(!afterHit) {
+			currentTile = randomAttackTile();
+			if(currentTile.attack()) {
+				System.out.println("FIRST");
+				hits[currentIndex] = currentTile;
+				firstHit = currentTile;
+				currentIndex++;
+				afterHit = true;
+			}
+		} else {
+			if(newDirection) {
+				attackDirection = newAttackDirection();
+			}
+			if(attackDirection == 0) {
+				if(bord.translate(currentTile, -1, 0).attack()) {
+					hits[currentIndex] = bord.translate(currentTile, -1, 0);
+					currentTile = hits[currentIndex];
+					currentIndex++;
+					newDirection = false;
+				} else if(newDirection == false) {
+					currentTile = firstHit;
+					switchDirection();
+				}
+			} else if(attackDirection == 1) {
+				if(bord.translate(currentTile, 0, 1).attack()) {
+					hits[currentIndex] = bord.translate(currentTile, 0, 1);
+					currentTile = hits[currentIndex];
+					currentIndex++;
+					newDirection = false;
+				} else if(newDirection == false) {
+					currentTile = firstHit;
+					switchDirection();
+				}
+			} else if(attackDirection == 2) {
+				if(bord.translate(currentTile, 1, 0).attack()) {
+					hits[currentIndex] = bord.translate(currentTile, 1, 0);
+					currentTile = hits[currentIndex];
+					currentIndex++;
+					newDirection = false;
+				} else if(newDirection == false) {
+					currentTile = firstHit;
+					switchDirection();
+				}
+			} else if(attackDirection == 3) {
+				if(bord.translate(currentTile, 0, -1).attack()) {
+					hits[currentIndex] = bord.translate(currentTile, 0, -1);
+					currentTile = hits[currentIndex];
+					currentIndex++;
+					newDirection = false;
+				} else if(newDirection == false) {
+					currentTile = firstHit;
+					switchDirection();
+				}
+			}
+		}
+		
+		if(attackDirection == 0 && currentTile.getCoorX() == 0){
+			switchDirection();
+		} else if(attackDirection == 1 && currentTile.getCoorY() == 9) {
+			switchDirection();
+		} else if(attackDirection == 2 && currentTile.getCoorX() == 9) {
+			switchDirection();
+		} else if(attackDirection == 3 && currentTile.getCoorY() == 0) {
+			switchDirection();
+		}
+	}
+	
+	private void switchDirection() {
+		if(attackDirection == 0) {
+			attackDirection = 2;
+		} else if(attackDirection == 1) {
+			attackDirection = 3;
+		} else if(attackDirection == 2) {
+			attackDirection = 0;
+		} else if(attackDirection == 3) {
+			attackDirection = 1;
+		}
+	}
+	
 	/**Raad een random tegel*/
 	public Tile randomTile() {
-		x = random.nextInt(10);
-		y = random.nextInt(10);
+		return bord.getTiles()[randomNumber(10)][randomNumber(10)];
+	}
+	
+	public Tile randomAttackTile() {
+		boolean b = true;
+		Tile tile = randomTile();;
 		
-		returnTile = bord.getTiles()[x][y];
+		while(b) {
+			tile = randomTile();
+			
+			if(tile.getCanGetShot() && !tile.getIsShot()) {
+				b = false;
+			}
+		}
 		
-		return returnTile;
+		return tile;
 	}
 	
 	/**Raad een random plaats richting*/
 	public int randomDirection() {
-		d = random.nextInt(2);
-		
-		return d;
+		return randomNumber(2);
 	}
 	
-	/**Bepaal de volgende aanval*/
-	public void attackHit(Tile[] tiles) {
-		randomDirection = random.nextInt(4);
-		if(randomDirection == 0 && randomDirection == 2) {
-			
-		} else if(randomDirection == 1 && randomDirection == 3) {
-			
+	private int randomNumber(int i) {
+		int returnInt;
+		
+		returnInt = random.nextInt(i);
+		
+		return returnInt;
+	}
+	
+	private int newAttackDirection() {
+		boolean b = false;
+		int i = 0;
+		
+		while(!b) {
+			i = randomNumber(4);
+			if(i == 0) {
+				if(currentTile.getCoorX() != 0) {
+					if(!bord.translate(currentTile, -1, 0).getIsShot()) {
+						b = true;
+					}
+				}
+			} else if(i == 1) {
+				if(currentTile.getCoorY() != 9) {
+					if(!bord.translate(currentTile, 0, 1).getIsShot()) {
+						b = true;
+					}
+				}
+			} else if(i == 2) {
+				if(currentTile.getCoorX() != 9) {
+					if(!bord.translate(currentTile, 1, 0).getIsShot()) {
+						b = true;
+					}
+				}
+			} else if(i == 3) {
+				if(currentTile.getCoorY() != 0) {
+					if(!bord.translate(currentTile, 0, -1).getIsShot()) {
+						b = true;
+					}
+				}
+			}
 		}
+		
+		return i;
 	}
 }

@@ -44,7 +44,7 @@ public class TegenstanderBord extends Bord{
 				handler.getMouseManager().setLeftPressed();
 				try{
 					//controleer ofdat de tegel die aangevallen wordt al eens is aangevallen
-					if(!getTile(hover()).getIsShot()) {
+					if(!getTile(hover()).getIsShot() && getTile(hover()).getCanGetShot()) {
 						//val de tegel aan
 						getTile(hover()).attack();
 						//als alle schepen gezonken zijn heeft P1 gewonnen
