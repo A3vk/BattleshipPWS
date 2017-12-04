@@ -19,13 +19,12 @@ public class Ship {
 	 * 
 	 * bord: een instantie van het bord 
 	 */
-	private int length, direction, startX, startY;
+	private int length, direction;
 	private int shipLeft;
 	
 	private Tile tile;
 	
 	private boolean visible;
-	private boolean N = true, O = true, Z = true, W = true, H1 = true, H2 = true, H3 = true, V1 = true, V2 = true, V3 = true;
 	
 	private Bord bord;
 	
@@ -36,28 +35,7 @@ public class Ship {
 		this.visible = visible;
 		this.bord = bord;
 		
-		startX = tile.getCoorX();
-		startY = tile.getCoorY();
-		
 		shipLeft = length;
-		
-		//pas de controle variabelen aan ten opzichte van de lengte
-		if(length == 4) {
-			H3 = false;
-			V3 = false;
-		} else if(length == 3) {
-			H2 = false;
-			H3 = false;
-			V2 = false;
-			V3 = false;
-		} else if(length ==2) {
-			H1 = false;
-			H2 = false;
-			H3 = false;
-			V1 = false;
-			V2 = false;
-			V3 = false;
-		}
 		
 		placeShip();
 	}
@@ -71,21 +49,21 @@ public class Ship {
 			for(int i = 0; i < length; i++) {
 				try {
 					//verander de variabelen in de Tile
-					bord.getTiles()[startX + i][startY].setCanPlace(false);
-					bord.getTiles()[startX + i][startY].setHasShip(true);
+					bord.translate(tile, i, 0).setCanPlace(false);
+					bord.translate(tile, i, 0).setHasShip(true);
 					//verander de afbeelding van de Tile
 					if(i == 0) {
-						bord.getTiles()[startX + i][startY].setPiece('W');
+						bord.translate(tile, i, 0).setPiece('W');
 						if(visible)
-							bord.getTiles()[startX + i][startY].setImg(Assets.shipBW);
+							bord.translate(tile, i, 0).setImg(Assets.shipBW);
 					}else if(i > 0 && i < length - 1) {
-						bord.getTiles()[startX + i][startY].setPiece('H');
+						bord.translate(tile, i, 0).setPiece('H');
 						if(visible)
-							bord.getTiles()[startX + i][startY].setImg(Assets.shipMH);
+							bord.translate(tile, i, 0).setImg(Assets.shipMH);
 					}else if(i == length - 1) {
-						bord.getTiles()[startX + i][startY].setPiece('O');
+						bord.translate(tile, i, 0).setPiece('O');
 						if(visible)
-							bord.getTiles()[startX + i][startY].setImg(Assets.shipBO);
+							bord.translate(tile, i, 0).setImg(Assets.shipBO);
 					}
 				} catch(ArrayIndexOutOfBoundsException e) {}
 			}
@@ -95,21 +73,21 @@ public class Ship {
 			for(int i = 0; i < length; i++) {
 				try {
 					//verander de variabelen in de Tile
-					bord.getTiles()[startX][startY + i].setCanPlace(false);
-					bord.getTiles()[startX][startY + i].setHasShip(true);
+					bord.translate(tile, 0, i).setCanPlace(false);
+					bord.translate(tile, 0, i).setHasShip(true);
 					//verander de afbeelding van de Tile
 					if(i == 0) {
-						bord.getTiles()[startX][startY + i].setPiece('N');
+						bord.translate(tile, 0, i).setPiece('N');
 						if(visible)
-							bord.getTiles()[startX][startY + i].setImg(Assets.shipBN);
+							bord.translate(tile, 0, i).setImg(Assets.shipBN);
 					}else if(i > 0 && i < length - 1) {
-						bord.getTiles()[startX][startY + i].setPiece('V');
+						bord.translate(tile, 0, i).setPiece('V');
 						if(visible)
-							bord.getTiles()[startX][startY + i].setImg(Assets.shipMV);
+							bord.translate(tile, 0, i).setImg(Assets.shipMV);
 					}else if(i == length - 1) {
-						bord.getTiles()[startX][startY + i].setPiece('Z');
+						bord.translate(tile, 0, i).setPiece('Z');
 						if(visible)
-							bord.getTiles()[startX][startY + i].setImg(Assets.shipBZ);
+							bord.translate(tile, 0, i).setImg(Assets.shipBZ);
 					}
 				} catch(ArrayIndexOutOfBoundsException e) {}
 			}
@@ -124,61 +102,16 @@ public class Ship {
 			if(direction == 0) {
 				//loop door de lengte
 				for(int i = 0; i < length; i++) {
-					if(i == 0) {
-						//controleer ofdat het schip nog niet is geraakt
-						if(bord.getTiles()[startX + i][startY].getImg() == Assets.HshipBW)
-							//controleer ofdat de variabelen nog niet is aangepast
-							if(W) {
-								//pas de variabelen aan
-								W = false;
-								shipLeft--;
-							}
-					}else if(i > 0 && i < length - 1) {
-						if(bord.getTiles()[startX + i][startY].getImg() == Assets.HshipMH)
-							if(H1) {
-								H1 = false;
-								shipLeft--;
-							} else if(H2) {
-								H2 = false;
-								shipLeft--;
-							} else if(H3) {
-								H3 = false;
-								shipLeft--;
-							}
-					}else if(i == length - 1) {
-						if(bord.getTiles()[startX + i][startY].getImg() == Assets.HshipBO)
-							if(O) {
-								O = false;
-								shipLeft--;
-							}
+					if(bord.translate(tile, i, 0).getImg() == Assets.hit && !bord.translate(tile, i, 0).getIsUpdated()){
+						bord.translate(tile, i, 0).setIsUpdated();
+						shipLeft--;
 					}
 				}
 			} else if(direction == 1) {
 				for(int i = 0; i < length; i++) {
-					if(i == 0) {
-						if(bord.getTiles()[startX][startY + i].getImg() == Assets.HshipBN)
-							if(N) {
-								N = false;
-								shipLeft--;
-							}
-					}else if(i > 0 && i < length - 1) {
-						if(bord.getTiles()[startX][startY + i].getImg() == Assets.HshipMV)
-							if(V1) {
-								V1 = false;
-								shipLeft--;
-							} else if(V2) {
-								V2 = false;
-								shipLeft--;
-							} else if(V3) {
-								V3 = false;
-								shipLeft--;
-							}
-					}else if(i == length - 1) {
-						if(bord.getTiles()[startX][startY + i].getImg() == Assets.HshipBZ)
-							if(Z) {
-								Z = false;
-								shipLeft--;
-							}
+					if(bord.translate(tile, 0, i).getImg() == Assets.hit && !bord.translate(tile, 0, i).getIsUpdated()) {
+						bord.translate(tile, 0, i).setIsUpdated();
+						shipLeft--;
 					}
 				}
 			}
@@ -198,30 +131,52 @@ public class Ship {
 		if(direction == 0) {
 			//loop door de lengte
 			for(int i = 0; i < length; i++) {
-					if(i == 0) {
-						//pas de afbeelding van de tegel aan
-						bord.getTiles()[startX + i][startY].setImg(Assets.SshipBW);
-						//pas het variabelen aan
-						bord.getTiles()[startX + i][startY].setIsSunken();
-					}else if(i > 0 && i < length - 1) {
-						bord.getTiles()[startX + i][startY].setImg(Assets.SshipMH);
-						bord.getTiles()[startX + i][startY].setIsSunken();
-					}else if(i == length - 1) {
-						bord.getTiles()[startX + i][startY].setImg(Assets.SshipBO);
-						bord.getTiles()[startX + i][startY].setIsSunken();
-					}
+				if(i == 0) {
+					//pas de afbeelding van de tegel aan
+					bord.translate(tile, i, 0).setImg(Assets.SshipBW);
+					//pas het variabelen aan
+					bord.translate(tile, i, 0).setIsSunken();
+				}else if(i > 0 && i < length - 1) {
+					bord.translate(tile, i, 0).setImg(Assets.SshipMH);
+					bord.translate(tile, i, 0).setIsSunken();
+				}else if(i == length - 1) {
+					bord.translate(tile, i, 0).setImg(Assets.SshipBO);
+					bord.translate(tile, i, 0).setIsSunken();
+				}
 			}
 		} else if(direction == 1) {
 			for(int i = 0; i < length; i++) {
 				if(i == 0) {
-					bord.getTiles()[startX][startY + i].setImg(Assets.SshipBN);
-					bord.getTiles()[startX][startY + i].setIsSunken();
+					bord.translate(tile, 0, i).setImg(Assets.SshipBN);
+					bord.translate(tile, 0, i).setIsSunken();
 				}else if(i > 0 && i < length - 1) {
-						bord.getTiles()[startX][startY + i].setImg(Assets.SshipMV);
-						bord.getTiles()[startX][startY + i].setIsSunken();
+					bord.translate(tile, 0, i).setImg(Assets.SshipMV);
+					bord.translate(tile, 0, i).setIsSunken();
 				}else if(i == length - 1) {
-						bord.getTiles()[startX][startY + i].setImg(Assets.SshipBZ);
-						bord.getTiles()[startX][startY + i].setIsSunken();
+					bord.translate(tile, 0, i).setImg(Assets.SshipBZ);
+					bord.translate(tile, 0, i).setIsSunken();
+				}
+			}
+		}
+		
+		updateTiles();
+	}
+	
+	private void updateTiles() {
+		if(direction == 1) {
+			for(int i = -1; i <= 1; i++) {
+				for(int j = -1; j <= length; j++) {
+					try {
+						bord.translate(tile, i, j).setCanGetShot();
+					}catch(ArrayIndexOutOfBoundsException e) {}
+				}
+			}
+		} else if(direction == 0) {
+			for(int i = -1; i <= length; i++) {
+				for(int j = -1; j <= 1; j++) {
+					try {
+						bord.translate(tile, i, j).setCanGetShot();
+					}catch(ArrayIndexOutOfBoundsException e) {}
 				}
 			}
 		}

@@ -7,7 +7,7 @@ public class Assets {
 	private static final int width = 40, height = 40;
 	
 	//H staat voor hit & S staat voor sunken
-	public static BufferedImage shipBN, shipBO, shipBZ, shipBW, shipMH, shipMV, HshipBN, HshipBO, HshipBZ, HshipBW, HshipMH, HshipMV, SshipBN, SshipBO, SshipBZ, SshipBW, SshipMH, SshipMV, leeg, mis1, mis2, mis3, full;
+	public static BufferedImage shipBN, shipBO, shipBZ, shipBW, shipMH, shipMV, HshipBN, HshipBO, HshipBZ, HshipBW, HshipMH, HshipMV, SshipBN, SshipBO, SshipBZ, SshipBW, SshipMH, SshipMV, leeg, mis1, mis2, mis3, full, hit;
 	
 	/**De init() functie laad alle sprites uit de spritesheet in bij het opstarten van de game*/
 	public static void init() {
@@ -38,5 +38,6 @@ public class Assets {
 		mis2 = sheet.crop(0, 80, width, height);
 		mis3 = sheet.crop(40, 80, width, height);
 		full = sheet.crop(80, 80, width, height);
+		hit = sheet.crop(120, 80, width, height);
 	}
 }
