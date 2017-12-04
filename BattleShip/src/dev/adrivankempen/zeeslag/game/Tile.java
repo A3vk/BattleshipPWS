@@ -48,10 +48,12 @@ public class Tile {
 	private char piece = 'E';
 	
 	private boolean canPlace = true;
+	private boolean canGetShot = true;
 	private boolean hasShip = false;
 	private boolean clicked = false;
 	private boolean isShot = false;
 	private boolean isSunken = false;
+	private boolean isUpdated = false;
 	
 	private BufferedImage img = Assets.leeg;
 	private BufferedImage tempImg = img;
@@ -93,23 +95,10 @@ public class Tile {
 	/**val de tegel aan*/
 	public boolean attack() {
 		//controleer ofdat de tegel niet al eerder is aangevallen
-		if(!isShot) {
+		if(!isShot && !isSunken && canGetShot) {
 			//controleer ofdat er een schip staat
 			if(hasShip) {
-				//controleer wat voor soort tegel het van het schip is
-				if(piece == 'N')
-					//pas de afbeelding van de tegel aan
-					setImg(Assets.HshipBN);
-				else if(piece == 'O')
-					setImg(Assets.HshipBO);
-				else if(piece == 'W')
-					setImg(Assets.HshipBW);
-				else if(piece == 'Z')
-					setImg(Assets.HshipBZ);
-				else if(piece == 'H')
-					setImg(Assets.HshipMH);
-				else if(piece == 'V')
-					setImg(Assets.HshipMV);
+				setImg(Assets.hit);
 				return true;
 			} else {
 				//creëer een random getal
@@ -143,6 +132,22 @@ public class Tile {
 	public void setImg(BufferedImage img) {
 		this.img = img;
 		setTempImg(img);
+	}
+	
+	public void setIsUpdated() {
+		isUpdated = true;
+	}
+	
+	public boolean getIsUpdated() {
+		return isUpdated;
+	}
+	
+	public void setCanGetShot() {
+		canGetShot = false;
+	}
+	
+	public boolean getCanGetShot() {
+		return canGetShot;
 	}
 	
 	public void setIsSunken() {
