@@ -44,6 +44,9 @@ public class SpelerBord extends Bord {
 			ai.attack();
 				//als alle schepen gezonken zijn heeft P2 gewonnen
 				if(updateShips() == 0) {
+					try {
+						TimeUnit.SECONDS.sleep(1);
+					} catch (InterruptedException e) {}
 					handler.winP2();
 					State.setState(handler.getGame().getEndGameState());
 				}
