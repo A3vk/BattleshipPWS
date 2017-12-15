@@ -35,7 +35,6 @@ public class AI {
 	public void attack() {
 		try {
 			if(firstHit.getIsSunken()) {
-				System.out.println("RESET");
 				afterHit = false;
 				currentIndex = 0;
 				newDirection = true;
@@ -45,7 +44,6 @@ public class AI {
 		if(!afterHit) {
 			currentTile = randomAttackTile();
 			if(currentTile.attack()) {
-				System.out.println("FIRST");
 				hits[currentIndex] = currentTile;
 				firstHit = currentTile;
 				currentIndex++;

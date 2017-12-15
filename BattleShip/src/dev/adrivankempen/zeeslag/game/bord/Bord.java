@@ -51,7 +51,7 @@ public class Bord {
 	
 	protected Tile[][] tiles;
 	protected Handler handler;
-	private BufferedImage[] tempImg = new BufferedImage[5];
+	private BufferedImage[] tempImg = {Assets.leeg, Assets.leeg, Assets.leeg, Assets.leeg, Assets.leeg};
 	
 	/**creëer het bord*/
 	public Bord(int x, int y, Handler handler) {
@@ -176,7 +176,9 @@ public class Bord {
 				//loop door de Tiles waar de preview geplaatst moet worden
 				for(int i = 0; i < currentLength; i++) {
 					//maak een back-up van de tegels waarop de preview geplaatst wordt
-					tempImg[i] = getTiles()[oldX + i][oldY].getImg();
+					if(currentLength != 5) {
+						tempImg[i] = getTiles()[oldX + i][oldY].getImg();
+					}
 					//plaats het schip
 					if(i == 0) {
 						getTiles()[oldX + i][oldY].setImg(Assets.shipBW);

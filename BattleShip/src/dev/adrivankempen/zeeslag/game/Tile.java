@@ -96,6 +96,7 @@ public class Tile {
 	public boolean attack() {
 		//controleer ofdat de tegel niet al eerder is aangevallen
 		if(!isShot && !isSunken && canGetShot) {
+			isShot = true;
 			//controleer ofdat er een schip staat
 			if(hasShip) {
 				setImg(Assets.hit);
@@ -112,7 +113,6 @@ public class Tile {
 					setImg(Assets.mis3);
 				}
 			}
-			isShot = true;
 		}
 		return false;
 	}
