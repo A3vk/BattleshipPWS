@@ -9,8 +9,8 @@ import dev.adrivankempen.zeeslag.gfx.Assets;
 public class MenuState extends State {
 	int playW = 80;
 	int playH = 40;
-	int playX = handler.getGame().getWidth() / 2 - playW;
-	int playY = handler.getGame().getHeight() / 2 - playH;
+	int playX = handler.getGame().getWidth() / 2 - (playW / 2);
+	int playY = handler.getGame().getHeight() / 2 - (playH / 2);
 	
 	public MenuState(Handler handler) {
 		super(handler);

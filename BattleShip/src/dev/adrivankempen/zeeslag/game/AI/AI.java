@@ -18,7 +18,6 @@ public class AI {
 	 * random: regelt de random getallen
 	 */
 	private Bord bord;
-	private Tile[] hits = new Tile[5];
 	private Tile currentTile;
 	private Tile firstHit;
 	private boolean afterHit = false;
@@ -44,7 +43,6 @@ public class AI {
 		if(!afterHit) {
 			currentTile = randomAttackTile();
 			if(currentTile.attack()) {
-				hits[currentIndex] = currentTile;
 				firstHit = currentTile;
 				currentIndex++;
 				afterHit = true;
@@ -55,18 +53,21 @@ public class AI {
 			}
 			if(attackDirection == 0) {
 				if(bord.translate(currentTile, -1, 0).attack()) {
-					hits[currentIndex] = bord.translate(currentTile, -1, 0);
-					currentTile = hits[currentIndex];
+					currentTile = bord.translate(currentTile, -1, 0);
 					currentIndex++;
 					newDirection = false;
 				} else if(newDirection == false) {
+					if(currentIndex < 0) {
+						if(currentTile.getCoorX() == 0) {
+							
+						}
+					}
 					currentTile = firstHit;
 					switchDirection();
 				}
 			} else if(attackDirection == 1) {
 				if(bord.translate(currentTile, 0, 1).attack()) {
-					hits[currentIndex] = bord.translate(currentTile, 0, 1);
-					currentTile = hits[currentIndex];
+					currentTile = bord.translate(currentTile, 0, 1);
 					currentIndex++;
 					newDirection = false;
 				} else if(newDirection == false) {
@@ -75,8 +76,7 @@ public class AI {
 				}
 			} else if(attackDirection == 2) {
 				if(bord.translate(currentTile, 1, 0).attack()) {
-					hits[currentIndex] = bord.translate(currentTile, 1, 0);
-					currentTile = hits[currentIndex];
+					currentTile = bord.translate(currentTile, 1, 0);
 					currentIndex++;
 					newDirection = false;
 				} else if(newDirection == false) {
@@ -85,8 +85,7 @@ public class AI {
 				}
 			} else if(attackDirection == 3) {
 				if(bord.translate(currentTile, 0, -1).attack()) {
-					hits[currentIndex] = bord.translate(currentTile, 0, -1);
-					currentTile = hits[currentIndex];
+					currentTile = bord.translate(currentTile, 0, -1);
 					currentIndex++;
 					newDirection = false;
 				} else if(newDirection == false) {
@@ -157,32 +156,34 @@ public class AI {
 		int i = 0;
 		
 		while(!b) {
-			i = randomNumber(4);
-			if(i == 0) {
-				if(currentTile.getCoorX() != 0) {
-					if(!bord.translate(currentTile, -1, 0).getIsShot()) {
-						b = true;
+			try {
+				i = randomNumber(4);
+				if(i == 0) {
+					if(currentTile.getCoorX() != 0) {
+						if(!bord.translate(currentTile, -1, 0).getIsShot()) {
+							b = true;
+						}
+					}
+				} else if(i == 1) {
+					if(currentTile.getCoorY() != 10) {
+						if(!bord.translate(currentTile, 0, 1).getIsShot()) {
+							b = true;
+						}
+					}
+				} else if(i == 2) {
+					if(currentTile.getCoorX() != 10) {
+						if(!bord.translate(currentTile, 1, 0).getIsShot()) {
+							b = true;
+						}
+					}
+				} else if(i == 3) {
+					if(currentTile.getCoorY() != 0) {
+						if(!bord.translate(currentTile, 0, -1).getIsShot()) {
+							b = true;
+						}
 					}
 				}
-			} else if(i == 1) {
-				if(currentTile.getCoorY() != 9) {
-					if(!bord.translate(currentTile, 0, 1).getIsShot()) {
-						b = true;
-					}
-				}
-			} else if(i == 2) {
-				if(currentTile.getCoorX() != 9) {
-					if(!bord.translate(currentTile, 1, 0).getIsShot()) {
-						b = true;
-					}
-				}
-			} else if(i == 3) {
-				if(currentTile.getCoorY() != 0) {
-					if(!bord.translate(currentTile, 0, -1).getIsShot()) {
-						b = true;
-					}
-				}
-			}
+			} catch(ArrayIndexOutOfBoundsException e) {}
 		}
 		
 		return i;
