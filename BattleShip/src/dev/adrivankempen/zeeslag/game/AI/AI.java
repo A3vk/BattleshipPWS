@@ -125,7 +125,7 @@ public class AI {
 	
 	public Tile randomAttackTile() {
 		boolean b = true;
-		Tile tile = randomTile();;
+		Tile tile = randomTile();
 		
 		while(b) {
 			tile = randomTile();
