@@ -31,7 +31,6 @@ public class EndGameState extends State {
 
 	@Override
 	public void render(Graphics g) {
-		g.drawImage(ImageLoader.loadImage("/textures/bg.png"), 0, 0, null);
 		Font fnt0 = new Font("Arial", Font.BOLD, 50);
 		g.setFont(fnt0);
 		if (handler.getWinP1()) {
@@ -39,12 +38,14 @@ public class EndGameState extends State {
 			String s = "Je hebt gewonnen";
 			int x = (handler.getGame().getWidth() - fm.stringWidth(s)) / 2;
 			int y = (fm.getAscent() + (handler.getGame().getHeight() - (fm.getAscent() + fm.getDescent())) / 2) - 200;
+			g.drawImage(ImageLoader.loadImage("/textures/bgW.png"), 0, 0, null);
 			g.drawString(s, x, y);
 		} else if (handler.getWinP2()) {
 			FontMetrics fm = g.getFontMetrics();
 			String s = "De computer heeft gewonnen";
 			int x = (handler.getGame().getWidth() - fm.stringWidth(s)) / 2;
 			int y = (fm.getAscent() + (handler.getGame().getHeight() - (fm.getAscent() + fm.getDescent())) / 2) - 200;
+			g.drawImage(ImageLoader.loadImage("/textures/bgV.png"), 0, 0, null);
 			g.drawString(s, x, y);
 		}
 //		g.drawImage(Assets.play, playX, playY, null);
