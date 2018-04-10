@@ -1,5 +1,7 @@
 package dev.adrivankempen.zeeslag.states;
 
+import java.awt.Font;
+import java.awt.FontMetrics;
 import java.awt.Graphics;
 
 import dev.adrivankempen.zeeslag.Handler;
@@ -34,6 +36,13 @@ public class MenuState extends State {
 	@Override
 	public void render(Graphics g) {
 		g.drawImage(ImageLoader.loadImage("/textures/bg.png"), 0, 0, null);
+		Font fnt0 = new Font("Arial", Font.BOLD, 50);
+		g.setFont(fnt0);
+		FontMetrics fm = g.getFontMetrics();
+		String s = "Zeeslag";
+		int x = (handler.getGame().getWidth() - fm.stringWidth(s)) / 2;
+		int y = (fm.getAscent() + (handler.getGame().getHeight() - (fm.getAscent() + fm.getDescent())) / 2) - 200;
+		g.drawString(s, x, y);
 		g.drawImage(Assets.play, playX, playY, null);
 	}
 
