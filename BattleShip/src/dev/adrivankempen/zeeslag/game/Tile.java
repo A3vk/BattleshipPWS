@@ -134,32 +134,32 @@ public class Tile {
 		setTempImg(img);
 	}
 	
-	public void setIsUpdated() {
-		isUpdated = true;
+	public void setIsUpdated(boolean b) {
+		isUpdated = b;
 	}
 	
 	public boolean getIsUpdated() {
 		return isUpdated;
 	}
 	
-	public void setCanGetShot() {
-		canGetShot = false;
+	public void setCanGetShot(boolean b) {
+		canGetShot = b;
 	}
 	
 	public boolean getCanGetShot() {
 		return canGetShot;
 	}
 	
-	public void setIsSunken() {
-		isSunken = true;
+	public void setIsSunken(boolean b) {
+		isSunken = b;
 	}
 	
 	public boolean getIsSunken() {
 		return isSunken;
 	}
 	
-	public void setPiece(char p) {
-		piece = p;
+	public void setPiece(char c) {
+		piece = c;
 	}
 	
 	public char getPiece() {

@@ -30,6 +30,10 @@ public class TegenstanderBord extends Bord{
 		}
 	}
 	
+	public void restart() {
+		super.restart();
+	}
+	
 	/**regelt de tick() van de setup voor P2*/
 	private void setup() {
 		//controleer ofdat P2 aan de beurt is

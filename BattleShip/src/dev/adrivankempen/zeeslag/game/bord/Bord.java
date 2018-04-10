@@ -70,6 +70,43 @@ public class Bord {
 		}
 	}
 	
+	public void restart() {
+		for(int i = 0; i < SIZE; i++) {
+			for(int j = 0; j < SIZE; j++) {
+				tiles[i][j].setPiece('E');
+				tiles[i][j].setCanPlace(true);
+				tiles[i][j].setCanGetShot(true);
+				tiles[i][j].setHasShip(false);
+				tiles[i][j].setClicked(false);
+				tiles[i][j].setIsShot(false);
+				tiles[i][j].setIsSunken(false);
+				tiles[i][j].setIsUpdated(false);
+				tiles[i][j].setImg(Assets.leeg);
+				tiles[i][j].setTempImg(Assets.leeg);
+			}
+		}
+		direction = 0;
+		currentShip = 0;
+		currentLength = 5;
+		oldD = 0;
+		oldL = 0;
+		oldX = 0;
+		oldY = 0;
+		shipsLeft = 5;
+		
+		slagschip = null;
+		kruiser = null;
+		fregat1 = null;
+		fregat2 = null;
+		mijnveger = null;
+		
+		visible = false;
+		
+		for(int i = 0; i < tempImg.length; i++) {
+			tempImg[i] = Assets.leeg;
+		}
+	}
+	
 	/**algemene tick functie*/
 	public void tick() {}
 	

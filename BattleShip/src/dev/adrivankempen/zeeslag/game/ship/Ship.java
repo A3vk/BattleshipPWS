@@ -103,14 +103,14 @@ public class Ship {
 				//loop door de lengte
 				for(int i = 0; i < length; i++) {
 					if(bord.translate(tile, i, 0).getImg() == Assets.hit && !bord.translate(tile, i, 0).getIsUpdated()){
-						bord.translate(tile, i, 0).setIsUpdated();
+						bord.translate(tile, i, 0).setIsUpdated(true);
 						shipLeft--;
 					}
 				}
 			} else if(direction == 1) {
 				for(int i = 0; i < length; i++) {
 					if(bord.translate(tile, 0, i).getImg() == Assets.hit && !bord.translate(tile, 0, i).getIsUpdated()) {
-						bord.translate(tile, 0, i).setIsUpdated();
+						bord.translate(tile, 0, i).setIsUpdated(true);
 						shipLeft--;
 					}
 				}
@@ -135,26 +135,26 @@ public class Ship {
 					//pas de afbeelding van de tegel aan
 					bord.translate(tile, i, 0).setImg(Assets.SshipBW);
 					//pas het variabelen aan
-					bord.translate(tile, i, 0).setIsSunken();
+					bord.translate(tile, i, 0).setIsSunken(true);
 				}else if(i > 0 && i < length - 1) {
 					bord.translate(tile, i, 0).setImg(Assets.SshipMH);
-					bord.translate(tile, i, 0).setIsSunken();
+					bord.translate(tile, i, 0).setIsSunken(true);
 				}else if(i == length - 1) {
 					bord.translate(tile, i, 0).setImg(Assets.SshipBO);
-					bord.translate(tile, i, 0).setIsSunken();
+					bord.translate(tile, i, 0).setIsSunken(true);
 				}
 			}
 		} else if(direction == 1) {
 			for(int i = 0; i < length; i++) {
 				if(i == 0) {
 					bord.translate(tile, 0, i).setImg(Assets.SshipBN);
-					bord.translate(tile, 0, i).setIsSunken();
+					bord.translate(tile, 0, i).setIsSunken(true);
 				}else if(i > 0 && i < length - 1) {
 					bord.translate(tile, 0, i).setImg(Assets.SshipMV);
-					bord.translate(tile, 0, i).setIsSunken();
+					bord.translate(tile, 0, i).setIsSunken(true);
 				}else if(i == length - 1) {
 					bord.translate(tile, 0, i).setImg(Assets.SshipBZ);
-					bord.translate(tile, 0, i).setIsSunken();
+					bord.translate(tile, 0, i).setIsSunken(true);
 				}
 			}
 		}
@@ -167,7 +167,7 @@ public class Ship {
 			for(int i = -1; i <= 1; i++) {
 				for(int j = -1; j <= length; j++) {
 					try {
-						bord.translate(tile, i, j).setCanGetShot();
+						bord.translate(tile, i, j).setCanGetShot(false);
 					}catch(ArrayIndexOutOfBoundsException e) {}
 				}
 			}
@@ -175,7 +175,7 @@ public class Ship {
 			for(int i = -1; i <= length; i++) {
 				for(int j = -1; j <= 1; j++) {
 					try {
-						bord.translate(tile, i, j).setCanGetShot();
+						bord.translate(tile, i, j).setCanGetShot(false);
 					}catch(ArrayIndexOutOfBoundsException e) {}
 				}
 			}

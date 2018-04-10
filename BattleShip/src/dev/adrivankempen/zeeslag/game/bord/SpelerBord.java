@@ -32,6 +32,10 @@ public class SpelerBord extends Bord {
 		}
 	}
 	
+	public void restart() {
+		super.restart();
+	}
+	
 	/**regelt het aanvallen van de AI*/
 	private void attack() {
 		//is het de beurt van P2

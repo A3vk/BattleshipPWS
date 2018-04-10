@@ -8,9 +8,20 @@ public class Handler {
 	private boolean turnP1 = true, turnP2 = false;
 	private boolean setupFase = true, attackFase = false;
 	private boolean winP1 = false, winP2 = false;
+	private boolean restart = false;
 	
 	public Handler(Game game) {
 		this.game = game;	
+	}
+	
+	public void restart() {
+		turnP1 = true;
+		turnP2 = false;
+		setupFase = true;
+		attackFase = false;
+		winP1 = false;
+		winP2 = false;
+		restart = false;
 	}
 	
 	public MouseManager getMouseManager() {
@@ -60,6 +71,14 @@ public class Handler {
 			setupFase = !setupFase;
 			attackFase = !attackFase;
 		}
+	}
+	
+	public void setRestart() {
+		restart = true;
+	}
+	
+	public boolean getRestart() {
+		return restart;
 	}
 	
 	public boolean getTurnP2() {
