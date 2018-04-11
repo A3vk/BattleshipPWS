@@ -21,7 +21,6 @@ public class Handler {
 		attackFase = false;
 		winP1 = false;
 		winP2 = false;
-		restart = false;
 	}
 	
 	public MouseManager getMouseManager() {
@@ -73,8 +72,8 @@ public class Handler {
 		}
 	}
 	
-	public void setRestart() {
-		restart = true;
+	public void setRestart(boolean b) {
+		restart = b;
 	}
 	
 	public boolean getRestart() {

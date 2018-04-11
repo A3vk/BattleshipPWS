@@ -31,7 +31,7 @@ public class TegenstanderBord extends Bord{
 	}
 	
 	public void restart() {
-		super.restart();
+		reset();
 	}
 	
 	/**regelt de tick() van de setup voor P2*/

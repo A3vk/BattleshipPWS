@@ -70,7 +70,7 @@ public class Bord {
 		}
 	}
 	
-	public void restart() {
+	public void reset() {
 		for(int i = 0; i < SIZE; i++) {
 			for(int j = 0; j < SIZE; j++) {
 				tiles[i][j].setPiece('E');
@@ -105,6 +105,7 @@ public class Bord {
 		for(int i = 0; i < tempImg.length; i++) {
 			tempImg[i] = Assets.leeg;
 		}
+		handler.setRestart(false);
 	}
 	
 	/**algemene tick functie*/

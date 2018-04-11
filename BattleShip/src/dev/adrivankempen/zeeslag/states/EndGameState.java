@@ -5,6 +5,7 @@ import java.awt.FontMetrics;
 import java.awt.Graphics;
 
 import dev.adrivankempen.zeeslag.Handler;
+import dev.adrivankempen.zeeslag.gfx.Assets;
 import dev.adrivankempen.zeeslag.gfx.ImageLoader;
 
 public class EndGameState extends State {
@@ -19,14 +20,15 @@ public class EndGameState extends State {
 
 	@Override
 	public void tick() {
-//		if (handler.getMouseManager().getLeftPressed()) {
-//			handler.getMouseManager().setLeftPressed();
-//			if (handler.getMouseManager().getMouseX() >= playX && handler.getMouseManager().getMouseX() <= playX + playW
-//					&& handler.getMouseManager().getMouseY() >= playY
-//					&& handler.getMouseManager().getMouseY() <= playY + playH) {
-//				State.setState(handler.getGame().getGameState());
-//			}
-//		}
+		if (handler.getMouseManager().getLeftPressed()) {
+			handler.getMouseManager().setLeftPressed();
+			if (handler.getMouseManager().getMouseX() >= playX && handler.getMouseManager().getMouseX() <= playX + playW
+					&& handler.getMouseManager().getMouseY() >= playY
+					&& handler.getMouseManager().getMouseY() <= playY + playH) {
+				State.setState(handler.getGame().getGameState());
+				handler.setRestart(true);
+			}
+		}
 	}
 
 	@Override
@@ -48,7 +50,7 @@ public class EndGameState extends State {
 			g.drawImage(ImageLoader.loadImage("/textures/bgV.png"), 0, 0, null);
 			g.drawString(s, x, y);
 		}
-//		g.drawImage(Assets.play, playX, playY, null);
+		g.drawImage(Assets.play, playX, playY, null);
 	}
 
 }

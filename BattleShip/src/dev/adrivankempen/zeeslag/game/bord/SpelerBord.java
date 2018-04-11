@@ -33,7 +33,7 @@ public class SpelerBord extends Bord {
 	}
 	
 	public void restart() {
-		super.restart();
+		reset();
 	}
 	
 	/**regelt het aanvallen van de AI*/
