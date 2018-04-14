@@ -33,10 +33,11 @@ public class AI {
 	
 	public void reset() {
 		afterHit = false;
-		newDirection = false;
+		newDirection = true;
 		currentIndex = 0;
 		currentTile = null;
 		firstHit = null;
+		
 	}
 	
 	public void attack() {
