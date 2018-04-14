@@ -25,8 +25,8 @@ public class EndGameState extends State {
 			if (handler.getMouseManager().getMouseX() >= playX && handler.getMouseManager().getMouseX() <= playX + playW
 					&& handler.getMouseManager().getMouseY() >= playY
 					&& handler.getMouseManager().getMouseY() <= playY + playH) {
-				State.setState(handler.getGame().getGameState());
 				handler.setRestart(true);
+				State.setState(handler.getGame().getGameState());
 			}
 		}
 	}

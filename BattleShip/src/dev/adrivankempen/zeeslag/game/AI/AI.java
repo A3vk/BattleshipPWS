@@ -31,6 +31,14 @@ public class AI {
 		this.bord = bord;
 	}
 	
+	public void reset() {
+		afterHit = false;
+		newDirection = false;
+		currentIndex = 0;
+		currentTile = null;
+		firstHit = null;
+	}
+	
 	public void attack() {
 		try {
 			if(firstHit.getIsSunken()) {
