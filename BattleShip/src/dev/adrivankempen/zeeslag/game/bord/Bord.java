@@ -51,7 +51,7 @@ public class Bord {
 	
 	protected Tile[][] tiles;
 	protected Handler handler;
-	private BufferedImage[] tempImg = new BufferedImage[5];
+	private BufferedImage[] tempImg = {Assets.leeg, Assets.leeg, Assets.leeg, Assets.leeg, Assets.leeg};
 	
 	/**creëer het bord*/
 	public Bord(int x, int y, Handler handler) {
@@ -68,6 +68,44 @@ public class Bord {
 				tiles[i][j] = new Tile(i, j, x, y, handler);
 			}
 		}
+	}
+	
+	public void reset() {
+		for(int i = 0; i < SIZE; i++) {
+			for(int j = 0; j < SIZE; j++) {
+				tiles[i][j].setPiece('E');
+				tiles[i][j].setCanPlace(true);
+				tiles[i][j].setCanGetShot(true);
+				tiles[i][j].setHasShip(false);
+				tiles[i][j].setClicked(false);
+				tiles[i][j].setIsShot(false);
+				tiles[i][j].setIsSunken(false);
+				tiles[i][j].setIsUpdated(false);
+				tiles[i][j].setImg(Assets.leeg);
+				tiles[i][j].setTempImg(Assets.leeg);
+			}
+		}
+		direction = 0;
+		currentShip = 0;
+		currentLength = 5;
+		oldD = 0;
+		oldL = 0;
+		oldX = 0;
+		oldY = 0;
+		shipsLeft = 5;
+		
+		slagschip = null;
+		kruiser = null;
+		fregat1 = null;
+		fregat2 = null;
+		mijnveger = null;
+		
+		visible = false;
+		
+		for(int i = 0; i < tempImg.length; i++) {
+			tempImg[i] = Assets.leeg;
+		}
+		handler.setRestart(false);
 	}
 	
 	/**algemene tick functie*/
@@ -176,7 +214,9 @@ public class Bord {
 				//loop door de Tiles waar de preview geplaatst moet worden
 				for(int i = 0; i < currentLength; i++) {
 					//maak een back-up van de tegels waarop de preview geplaatst wordt
-					tempImg[i] = getTiles()[oldX + i][oldY].getImg();
+					if(currentLength != 5) {
+						tempImg[i] = getTiles()[oldX + i][oldY].getImg();
+					}
 					//plaats het schip
 					if(i == 0) {
 						getTiles()[oldX + i][oldY].setImg(Assets.shipBW);

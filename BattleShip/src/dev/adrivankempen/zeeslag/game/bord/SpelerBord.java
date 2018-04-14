@@ -4,6 +4,7 @@ import java.util.concurrent.TimeUnit;
 
 import dev.adrivankempen.zeeslag.Handler;
 import dev.adrivankempen.zeeslag.game.AI.AI;
+import dev.adrivankempen.zeeslag.states.State;
 
 public class SpelerBord extends Bord {
 	/*
@@ -31,6 +32,10 @@ public class SpelerBord extends Bord {
 		}
 	}
 	
+	public void restart() {
+		reset();
+	}
+	
 	/**regelt het aanvallen van de AI*/
 	private void attack() {
 		//is het de beurt van P2
@@ -42,8 +47,13 @@ public class SpelerBord extends Bord {
 			//laat de AI aanvallen
 			ai.attack();
 				//als alle schepen gezonken zijn heeft P2 gewonnen
-				if(updateShips() == 0)
-					System.out.println("P2 heeft gewonnen");
+				if(updateShips() == 0) {
+					try {
+						TimeUnit.SECONDS.sleep(1);
+					} catch (InterruptedException e) {}
+					handler.winP2();
+					State.setState(handler.getGame().getEndGameState());
+				}
 				//wissel de beurt
 				handler.switchTurn();
 		}

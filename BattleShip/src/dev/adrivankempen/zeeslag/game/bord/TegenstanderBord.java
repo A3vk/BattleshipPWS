@@ -1,7 +1,10 @@
 package dev.adrivankempen.zeeslag.game.bord;
 
+import java.util.concurrent.TimeUnit;
+
 import dev.adrivankempen.zeeslag.Handler;
 import dev.adrivankempen.zeeslag.game.AI.AI;
+import dev.adrivankempen.zeeslag.states.State;
 
 public class TegenstanderBord extends Bord{	
 	/*
@@ -27,6 +30,10 @@ public class TegenstanderBord extends Bord{
 		}
 	}
 	
+	public void restart() {
+		reset();
+	}
+	
 	/**regelt de tick() van de setup voor P2*/
 	private void setup() {
 		//controleer ofdat P2 aan de beurt is
@@ -48,8 +55,13 @@ public class TegenstanderBord extends Bord{
 						//val de tegel aan
 						getTile(hover()).attack();
 						//als alle schepen gezonken zijn heeft P1 gewonnen
-						if(updateShips() == 0)
-							System.out.println("P1 heeft gewonnen");
+						if(updateShips() == 0) {
+							try {
+								TimeUnit.SECONDS.sleep(1);
+							} catch (InterruptedException e) {}
+							handler.winP1();
+							State.setState(handler.getGame().getEndGameState());
+						}							
 						//wissel de beurt
 						handler.switchTurn();
 					}

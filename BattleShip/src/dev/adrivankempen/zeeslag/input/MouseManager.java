@@ -31,17 +31,6 @@ public class MouseManager implements MouseListener, MouseMotionListener {
 	public int getMouseY(){
 		return mouseY;
 	}
-	
-	//standaard functies die nodig zijn voor een MouseManager
-	
-	@Override
-	public void mouseClicked(MouseEvent e) {}
-
-	@Override
-	public void mouseEntered(MouseEvent e) {}
-
-	@Override
-	public void mouseExited(MouseEvent e) {}
 
 	@Override
 	//controleer ofdat de linker of rechter muisknop ingedrukt wordt
@@ -62,13 +51,22 @@ public class MouseManager implements MouseListener, MouseMotionListener {
 	}
 
 	@Override
-	public void mouseDragged(MouseEvent e) {}
-
-	@Override
 	//update de x en y positie van de muis bij elke beweging van de muis
 	public void mouseMoved(MouseEvent e) {
 		mouseX = e.getX();
 		mouseY = e.getY();
 	}
 
+	//standaard functies die nodig zijn voor een MouseManager
+	@Override
+	public void mouseDragged(MouseEvent e) {}
+	
+	@Override
+	public void mouseClicked(MouseEvent e) {}
+
+	@Override
+	public void mouseEntered(MouseEvent e) {}
+
+	@Override
+	public void mouseExited(MouseEvent e) {}
 }

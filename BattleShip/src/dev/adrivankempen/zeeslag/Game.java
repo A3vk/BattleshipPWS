@@ -6,8 +6,9 @@ import java.awt.image.BufferStrategy;
 import dev.adrivankempen.zeeslag.display.Display;
 import dev.adrivankempen.zeeslag.gfx.Assets;
 import dev.adrivankempen.zeeslag.input.MouseManager;
+import dev.adrivankempen.zeeslag.states.EndGameState;
 import dev.adrivankempen.zeeslag.states.GameState;
-import dev.adrivankempen.zeeslag.states.SetupState;
+import dev.adrivankempen.zeeslag.states.MenuState;
 import dev.adrivankempen.zeeslag.states.State;
 
 public class Game implements Runnable{
@@ -43,8 +44,8 @@ public class Game implements Runnable{
 	private MouseManager mouseManager;
 	
 	private State gameState;
-	@SuppressWarnings("unused")
-	private State setupState;
+	private State menuState;
+	private State endGameState;
 	
 	public Game(String title, int width, int height) {
 		this.title = title;
@@ -67,8 +68,9 @@ public class Game implements Runnable{
 		Assets.init();
 		
 		gameState = new GameState(handler);
-		setupState = new SetupState(handler);
-		State.setState(gameState);
+		menuState = new MenuState(handler);
+		endGameState = new EndGameState(handler);
+		State.setState(menuState);
 	}
 	
 	/**hoofd tick methode*/
@@ -141,6 +143,26 @@ public class Game implements Runnable{
 	
 	public MouseManager getMouseManager() {
 		return mouseManager;
+	}
+	
+	public State getMenuState() {
+		return menuState;
+	}
+	
+	public State getGameState() {
+		return gameState;
+	}
+	
+	public State getEndGameState() {
+		return endGameState;
+	}
+	
+	public int getWidth() {
+		return width;
+	}
+	
+	public int getHeight() {
+		return height;
 	}
 	
 	/**regelt het correct opstarten van de game*/
