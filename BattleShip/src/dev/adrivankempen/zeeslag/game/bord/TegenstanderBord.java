@@ -1,7 +1,5 @@
 package dev.adrivankempen.zeeslag.game.bord;
 
-import java.util.concurrent.TimeUnit;
-
 import dev.adrivankempen.zeeslag.Handler;
 import dev.adrivankempen.zeeslag.game.AI.AI;
 import dev.adrivankempen.zeeslag.states.State;
@@ -56,9 +54,6 @@ public class TegenstanderBord extends Bord{
 						getTile(hover()).attack();
 						//als alle schepen gezonken zijn heeft P1 gewonnen
 						if(updateShips() == 0) {
-							try {
-								TimeUnit.SECONDS.sleep(1);
-							} catch (InterruptedException e) {}
 							handler.winP1();
 							State.setState(handler.getGame().getEndGameState());
 						}							
