@@ -9,22 +9,44 @@ import dev.adrivankempen.zeeslag.Handler;
 import dev.adrivankempen.zeeslag.game.AI.AI;
 import dev.adrivankempen.zeeslag.states.State;
 
-public class SpelerBord extends Bord implements ActionListener {
+public class SpelerBord extends Bord {
 	/*
 	 * ai: de class die alles van de AI regelt tile: de tegel die aangevallen
 	 * wordt
 	 */
 
 	private AI ai;
-	private Timer timer;
+	private Timer attack_timer;
+	private Timer win_timer;
 
 	public SpelerBord(int x, int y, Handler handler) {
 		super(x, y, handler);
 
 		ai = new AI(this);
 		
-		timer = new Timer(1000, this);
-		timer.setRepeats(false);
+		win_timer = new Timer(1000, null);
+		win_timer.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				handler.winP2();
+				State.setState(handler.getGame().getEndGameState());
+			}
+		});
+		win_timer.setRepeats(false);
+		
+		attack_timer = new Timer(1000, null);
+		attack_timer.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				// laat de AI aanvallen
+				ai.attack();
+				// als alle schepen gezonken zijn heeft P2 gewonnen
+				if (updateShips() == 0) {
+					win_timer.start();
+				}
+				// wissel de beurt
+				handler.switchTurn();
+			}
+		});
+		attack_timer.setRepeats(false);
 	}
 
 	@Override
@@ -48,21 +70,8 @@ public class SpelerBord extends Bord implements ActionListener {
 		// is het de beurt van P2
 		if (handler.getTurnP2()) {
 			// Wacht 1 seconde
-			timer.start(); 
+			attack_timer.start(); 
 		}
-	}
-	
-	public void actionPerformed(ActionEvent e) {
-		System.out.println("TASK");
-		// laat de AI aanvallen
-		ai.attack();
-		// als alle schepen gezonken zijn heeft P2 gewonnen
-		if (updateShips() == 0) {
-			handler.winP2();
-			State.setState(handler.getGame().getEndGameState());
-		}
-		// wissel de beurt
-		handler.switchTurn();
 	}
 
 	/**
