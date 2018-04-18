@@ -5,7 +5,7 @@ import dev.adrivankempen.zeeslag.input.MouseManager;
 /**De Handler zorgt ervoor dat alle algemenen variabelen en inputs worden doorgegeven*/
 public class Handler {
 	private Game game;
-	private boolean turnP1 = true, turnP2 = false;
+	private boolean turnP1 = true, turnP2 = false, idle = false;
 	private boolean setupFase = true, attackFase = false;
 	private boolean winP1 = false, winP2 = false;
 	private boolean restart = false;
@@ -17,6 +17,7 @@ public class Handler {
 	public void restart() {
 		turnP1 = true;
 		turnP2 = false;
+		idle = false;
 		setupFase = true;
 		attackFase = false;
 		winP1 = false;
@@ -63,6 +64,14 @@ public class Handler {
 	
 	public boolean getTurnP1() {
 		return turnP1;
+	}
+	
+	public boolean getIdle() {
+		return idle;
+	}
+	
+	public void setIdle(boolean b) {
+		idle = b;
 	}
 	
 	public void switchFase() {

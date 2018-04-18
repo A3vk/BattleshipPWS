@@ -177,6 +177,7 @@ public class Ship {
 				for (int j = -1; j <= length; j++) {
 					try {
 						bord.translate(tile, i, j).setCanGetShot(false);
+						bord.translate(tile, i, j).setIsShot(true);
 						if (i == -1 || i == 1 || j == -1 || j == length) {
 							int r = random.nextInt(3);
 							if(r == 0) {
@@ -196,6 +197,7 @@ public class Ship {
 				for (int j = -1; j <= 1; j++) {
 					try {
 						bord.translate(tile, i, j).setCanGetShot(false);
+						bord.translate(tile, i, j).setIsShot(true);
 						if (i == -1 || i == length || j == -1 || j == 1) {
 							int r = random.nextInt(3);
 							if(r == 0) {

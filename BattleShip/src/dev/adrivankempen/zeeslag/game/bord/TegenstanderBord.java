@@ -1,6 +1,9 @@
 package dev.adrivankempen.zeeslag.game.bord;
 
-import java.util.concurrent.TimeUnit;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import javax.swing.Timer;
 
 import dev.adrivankempen.zeeslag.Handler;
 import dev.adrivankempen.zeeslag.game.AI.AI;
@@ -12,10 +15,21 @@ public class TegenstanderBord extends Bord{
 	 */
 	private AI ai;
 	
+	private Timer win_timer;
+	
 	public TegenstanderBord(int x, int y, Handler handler) {
 		super(x, y, handler);
 		
 		ai = new AI(this);
+		
+		win_timer = new Timer(1000, null);
+		win_timer.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				handler.winP1();
+				State.setState(handler.getGame().getEndGameState());
+			}
+		});
+		win_timer.setRepeats(false);
 	}
 	
 	@Override
@@ -32,6 +46,7 @@ public class TegenstanderBord extends Bord{
 	
 	public void restart() {
 		reset();
+		ai.reset();
 	}
 	
 	/**regelt de tick() van de setup voor P2*/
@@ -45,7 +60,7 @@ public class TegenstanderBord extends Bord{
 	
 	/**regelt de tick() van de aanval voor P1*/
 	private void attack() {
-		if(handler.getTurnP1()) {
+		if(handler.getTurnP1() && !handler.getIdle()) {
 			//controleer of er met de linker muisknop gedrukt word
 			if(handler.getMouseManager().getLeftPressed()) {
 				handler.getMouseManager().setLeftPressed();
@@ -56,11 +71,7 @@ public class TegenstanderBord extends Bord{
 						getTile(hover()).attack();
 						//als alle schepen gezonken zijn heeft P1 gewonnen
 						if(updateShips() == 0) {
-							try {
-								TimeUnit.SECONDS.sleep(1);
-							} catch (InterruptedException e) {}
-							handler.winP1();
-							State.setState(handler.getGame().getEndGameState());
+							win_timer.start();
 						}							
 						//wissel de beurt
 						handler.switchTurn();
