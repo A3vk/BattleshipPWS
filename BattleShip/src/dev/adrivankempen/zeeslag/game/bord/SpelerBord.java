@@ -42,8 +42,7 @@ public class SpelerBord extends Bord {
 				if (updateShips() == 0) {
 					win_timer.start();
 				}
-				// wissel de beurt
-				handler.switchTurn();
+				handler.setIdle(false);
 			}
 		});
 		attack_timer.setRepeats(false);
@@ -63,6 +62,7 @@ public class SpelerBord extends Bord {
 
 	public void restart() {
 		reset();
+		ai.reset();
 	}
 
 	/** regelt het aanvallen van de AI */
@@ -70,7 +70,9 @@ public class SpelerBord extends Bord {
 		// is het de beurt van P2
 		if (handler.getTurnP2()) {
 			// Wacht 1 seconde
-			attack_timer.start(); 
+			attack_timer.start();
+			handler.setIdle(true);
+			handler.switchTurn();
 		}
 	}
 

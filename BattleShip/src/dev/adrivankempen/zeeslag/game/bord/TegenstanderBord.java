@@ -46,6 +46,7 @@ public class TegenstanderBord extends Bord{
 	
 	public void restart() {
 		reset();
+		ai.reset();
 	}
 	
 	/**regelt de tick() van de setup voor P2*/
@@ -59,7 +60,7 @@ public class TegenstanderBord extends Bord{
 	
 	/**regelt de tick() van de aanval voor P1*/
 	private void attack() {
-		if(handler.getTurnP1()) {
+		if(handler.getTurnP1() && !handler.getIdle()) {
 			//controleer of er met de linker muisknop gedrukt word
 			if(handler.getMouseManager().getLeftPressed()) {
 				handler.getMouseManager().setLeftPressed();
